@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>hello phaser!</title>
+        <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
+		<script src="phaser-input.js"></script>
+    </head>
+    <body>
+    <script type="text/javascript">
+
+    window.onload = function() {
+
+        //  Note that this html file is set to pull down Phaser 2.5.0 from the JS Delivr CDN.
+        //  Although it will work fine with this tutorial, it's almost certainly not the most current version.
+        //  Be sure to replace it with an updated version before you start experimenting with adding your own code.
+
+        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create });
+		var terminalHistory = ['WELCOME TO THE PRATO ROBBY ASSEMBLING TOOL OPERATOR', 'ALSO KNOWN AS P.R.A.T.O.', 'PLEASE REASSEMBLE ROBBY'];
+		var input;
+		var lastSaidStuff;
+
+        function preload () {
+            game.load.image('logo', 'Robby.png');
+			game.add.plugin(PhaserInput.Plugin);
+			this.game.scale.pageAlignHorizontally = true;
+			this.game.scale.pageAlignVertically = true;
+
+        }
+
+        function create () {
+			
+            var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
+            logo.anchor.setTo(0.5, 0.5);
+			input = game.add.inputField(32, 550,{
+				width: 736,
+				height: 20,
+				font: '20px Courier',
+				backgroundColor: '#000000',
+				backgroundColor: '#000000',
+				fill: '#00FF00',
+				cursorColor: '#00FF00',
+				fillAlpha: 0,
+			});
+			
+			input.startFocus();
+			
+			input.keyListener = function (evt) {
+				this.value = this.domElement.value;
+				if (evt.keyCode === 13) {
+					keyDown();
+				}
+				this.updateText();
+				this.updateCursor();
+				this.updateSelection();
+				evt.preventDefault();
+			};
+			
+			var otherArrows = game.add.text(0, 470, ' > \n > \n > ', { font: "20px Courier", fill: "#00FF00" });
+			lastSaidStuff = game.add.text(32, 470, terminalHistory.join('\n'), { font: "20px Courier", fill: "#00FF00" });
+			var typeInArrow = game.add.text(0, 550, ' > ', { font: "20px Courier", fill: "#00FF00" });
+        }
+		
+		function keyDown() {
+				terminalHistory.splice(0,1);
+				terminalHistory.push('');
+				lastSaidStuff.setText(terminalHistory.join('\n'));
+				var result = blabla(input.value);
+				typeDelayed(result);
+				input.resetText();	
+				input.startFocus();		
+		}
+		
+		function typeDelayed(typeLeft) {
+				lastSaidStuff.setText(lastSaidStuff._text + typeLeft[0]);
+				terminalHistory[2] += typeLeft[0];
+				if(typeLeft.substring(1).length === 0) return;
+				game.time.events.add(75, typeDelayed, this, typeLeft.substring(1));
+		}
+		
+		function blabla(command){
+			return '' + eval.call(this, command);
+		}
+    };
+
+    </script>
+
+    </body>
+</html>
