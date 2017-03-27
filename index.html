@@ -8,17 +8,18 @@
 		<script src="src/Boot.js"></script>
 		<script src="src/Preloader.js"></script>
 		<script src="src/Game.js"></script>
+		<script src="src/Robby.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css" />
     </head>
     <body><div id="container">
     <script type="text/javascript">
 	(function() {
 		var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
-		
+
 		game.state.add('Boot', Prato.Boot);
 		game.state.add('Preloader', Prato.Preloader);
 		game.state.add('Game', Prato.Game);
-		
+
 		game.state.start('Boot');
 	})();
     </script></div>

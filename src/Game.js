@@ -1,5 +1,6 @@
-Prato.Game = function(game){		
-		this.terminalHistory = ['WELCOME TO THE PRATO ROBBY ASSEMBLING TOOL OPERATOR', 'ALSO KNOWN AS P.R.A.T.O.', 'PLEASE REASSEMBLE ROBBY'];
+Prato.Game = function(game){
+		this.terminalHistory = ['', '', ''];
+		this.terminalHistory2 = ['WELCOME TO THE PRATO ROBBY ASSEMBLING TOOL OPERATOR', 'ALSO KNOWN AS P.R.A.T.O.', 'PLEASE REASSEMBLE ROBBY'];
 		this.input;
 		this.lastSaidStuff;
 };
@@ -17,9 +18,9 @@ Prato.Game.prototype = {
 			cursorColor: '#00FF00',
 			fillAlpha: 0,
 		});
-		
+
 		this.input.startFocus();
-		var me = this
+		var me = this;
 		this.input.keyListener = function (evt) {
 			this.value = this.domElement.value;
 			if (evt.keyCode === 13) {
@@ -30,30 +31,35 @@ Prato.Game.prototype = {
 			this.updateSelection();
 			evt.preventDefault();
 		};
-		
+
 		var otherArrows = this.add.text(0, 470, ' > \n > \n > ', { font: "20px Courier", fill: "#00FF00" });
 		this.lastSaidStuff = this.add.text(32, 470, this.terminalHistory.join('\n'), { font: "20px Courier", fill: "#00FF00" });
 		var typeInArrow = this.add.text(0, 550, ' > ', { font: "20px Courier", fill: "#00FF00" });
+
+		this.typeDelayed(this.terminalHistory2.join('\n'));
 	},
-	update: function(){
-	},		
+	update: function () {
+	},
 	keyDown: function () {
-			this.terminalHistory.splice(0,1);
-			this.terminalHistory.push('');
-			this.lastSaidStuff.setText(this.terminalHistory.join('\n'));
 			var result = this.evaluateCall(this.input.value);
-			this.typeDelayed(result);
-			this.input.resetText();	
-			this.input.startFocus();		
+			this.typeDelayed('\n' + this.input.value + '\n' + result);
+			this.input.resetText();
+			this.input.startFocus();
 	},
-	
+
 	typeDelayed: function (typeLeft) {
-			this.lastSaidStuff.setText(this.lastSaidStuff._text + typeLeft[0]);
-			this.terminalHistory[2] += typeLeft[0];
+			if(typeLeft[1] && typeLeft[0] === '\n'){
+						this.terminalHistory.splice(0,1);
+						this.terminalHistory.push('');
+						this.lastSaidStuff.setText(this.terminalHistory.join('\n'));
+			} else{
+				this.lastSaidStuff.setText(this.lastSaidStuff._text + typeLeft[0]);
+				this.terminalHistory[2] += typeLeft[0];
+			}
 			if(typeLeft.substring(1).length === 0) return;
-			this.time.events.add(75, this.typeDelayed, this, typeLeft.substring(1));
+			this.time.events.add(25, this.typeDelayed, this, typeLeft.substring(1));
 	},
-	
+
 	evaluateCall: function (command){
 		return '' + eval.call(this, command);
 	}
