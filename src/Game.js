@@ -8,9 +8,14 @@ Prato.Game = function(game){
 };
 Prato.Game.prototype = {
 	create: function(){
-		var robby = this.add.sprite(this.world.centerX, this.world.centerY, 'robby');
+		this.stage.backgroundColor = "#383838";
+
+		var arrows = this.add.sprite(910, 475, 'arrows');
+		arrows.anchor.setTo(0.5, 0.5);
+		arrows.scale.setTo(0.2, 0.2);
+
 		this.add.sprite(0, 600, 'divider');
-		robby.anchor.setTo(0.5, 0.5);
+		this.setupGrid();
 		this.input = this.add.inputField(32, 718,{
 			width: 960,
 			height: 20,
@@ -86,5 +91,55 @@ Prato.Game.prototype = {
 		this.arrowHistory.push('   ');
 		this.otherArrows.setText(this.arrowHistory.join('\n'))
 
+	},
+	setupGrid (){
+		var level = this.getLevelString();
+		var oneLineLevel = level.replace(/(\r\n|\n|\r)/gm,"");
+		const offset = 50;
+		const columns = Math.max(...level.split('\n').map((line)=>line.length));
+		const rows = level.split('\n').length;
+		const columnWidth = (this.world.width - 200) / columns;
+		const rowWidth = this.world.height / rows;
+		const finalRadius = Math.min(columnWidth, rowWidth);
+
+		for(var i = 0; i < rows; i++){
+				for(var j = 0; j < columns; j++){
+					if(oneLineLevel[i * columns + j] === '-'){
+						var circle = this.add.sprite(offset + j * finalRadius, offset + i * finalRadius, 'line');
+						circle.anchor.setTo(0.5, 0.5);
+						circle.scale.setTo(0.1, 0.1);
+					} else if(oneLineLevel[i * columns + j] === 'o'){
+						var circle = this.add.sprite(offset + j * finalRadius, offset + i * finalRadius, 'circle');
+						circle.anchor.setTo(0.5, 0.5);
+						circle.scale.setTo(0.02, 0.02);
+					} else if(oneLineLevel[i * columns + j] === '|'){
+						var circle = this.add.sprite(offset + j * finalRadius, offset + i * finalRadius, 'line');
+						circle.anchor.setTo(0.5, 0.5);
+						circle.scale.setTo(0.1, 0.1);
+						circle.angle = 90;
+					}
+			}
+		}
+
+		var robby = this.add.sprite(offset, offset, 'robby');
+		robby.anchor.setTo(0.5, 0.5);
+		robby.scale.setTo(0.2, 0.2);
+
+		var badRobot = this.add.sprite(650, 325, 'badrobot');
+		badRobot.anchor.setTo(0.5, 0.5);
+		badRobot.scale.setTo(0.5, 0.5);
+
+    anim = badRobot.animations.add('blink');
+		anim.play(5, true);
+	},
+	getLevelString (){
+		var level = "o-oa  o-o-o\n\
+  |   | | |\n\
+o-o o-o o-o\n\
+|   |   | |\n\
+o-o-o   o-o\n\
+  |       c\n\
+  o-ob     ";
+		return level;
 	}
 };
