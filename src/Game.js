@@ -5,17 +5,17 @@ Prato.Game = function(game){
 		this.input;
 		this.lastSaidStuff;
 		this.otherArrows;
+		this.levelGrid = this.createGrid();
+		this.robbySprite;
 };
 Prato.Game.prototype = {
 	create: function(){
 		this.stage.backgroundColor = "#383838";
 
-		var arrows = this.add.sprite(910, 475, 'arrows');
-		arrows.anchor.setTo(0.5, 0.5);
-		arrows.scale.setTo(0.2, 0.2);
-
 		this.add.sprite(0, 600, 'divider');
 		this.setupGrid();
+		this.setupCharacters();
+		this.setupArrows();
 		this.input = this.add.inputField(32, 718,{
 			width: 960,
 			height: 20,
@@ -63,6 +63,7 @@ Prato.Game.prototype = {
 		this.typeDelayed(this.input.value + '\n' + result);
 		this.input.resetText();
 		this.input.startFocus();
+		return result;
 	},
 
 	typeDelayed: function (typeLeft) {
@@ -92,54 +93,124 @@ Prato.Game.prototype = {
 		this.otherArrows.setText(this.arrowHistory.join('\n'))
 
 	},
-	setupGrid (){
+	createGrid (){
 		var level = this.getLevelString();
 		var oneLineLevel = level.replace(/(\r\n|\n|\r)/gm,"");
 		const offset = 50;
 		const columns = Math.max(...level.split('\n').map((line)=>line.length));
 		const rows = level.split('\n').length;
+
+		var grid = this.createArray(rows, columns)
+
+		for(var i = 0; i < rows; i++){
+				for(var j = 0; j < columns; j++){
+					grid[i][j] = oneLineLevel[i * columns + j];
+			}
+		}
+		return grid;
+	},
+	setupGrid (){
+		const rows = this.levelGrid.length;
+		const columns = this.levelGrid[0].length;
+		const offset = 50;
 		const columnWidth = (this.world.width - 200) / columns;
 		const rowWidth = this.world.height / rows;
 		const finalRadius = Math.min(columnWidth, rowWidth);
 
 		for(var i = 0; i < rows; i++){
 				for(var j = 0; j < columns; j++){
-					if(oneLineLevel[i * columns + j] === '-'){
-						var circle = this.add.sprite(offset + j * finalRadius, offset + i * finalRadius, 'line');
-						circle.anchor.setTo(0.5, 0.5);
-						circle.scale.setTo(0.1, 0.1);
-					} else if(oneLineLevel[i * columns + j] === 'o'){
-						var circle = this.add.sprite(offset + j * finalRadius, offset + i * finalRadius, 'circle');
-						circle.anchor.setTo(0.5, 0.5);
-						circle.scale.setTo(0.02, 0.02);
-					} else if(oneLineLevel[i * columns + j] === '|'){
-						var circle = this.add.sprite(offset + j * finalRadius, offset + i * finalRadius, 'line');
-						circle.anchor.setTo(0.5, 0.5);
-						circle.scale.setTo(0.1, 0.1);
-						circle.angle = 90;
-					}
+					var spriteName = this.getGridSpriteForCharacter(this.levelGrid[i][j]);
+					this.addTweenedSprite(spriteName, offset + j * finalRadius, offset + i * finalRadius, 10 * i * columns + j, 1);
 			}
 		}
+	},
+	getGridSpriteForCharacter(character){
+		switch(character){
+			case 'o':
+			case 'R':
+			case 'E':
+				return 'circle';
+			case '-':
+				return 'horLine';
+			case '|':
+				return 'vertLine';
+		}
+	},
+	setupCharacters (){
+		const rows = this.levelGrid.length;
+		const columns = this.levelGrid[0].length;
+		const offset = 50;
+		const columnWidth = (this.world.width - 200) / columns;
+		const rowWidth = this.world.height / rows;
+		const finalRadius = Math.min(columnWidth, rowWidth);
 
-		var robby = this.add.sprite(offset, offset, 'robby');
-		robby.anchor.setTo(0.5, 0.5);
-		robby.scale.setTo(0.2, 0.2);
+		this.robbySprite = this.addTweenedSprite('robby', offset, offset, 10 * columns * rows, 0.2);
 
-		var badRobot = this.add.sprite(650, 325, 'badrobot');
-		badRobot.anchor.setTo(0.5, 0.5);
-		badRobot.scale.setTo(0.5, 0.5);
-
-    anim = badRobot.animations.add('blink');
+		var badRobot = this.addTweenedSprite('badrobot', 650, 325, 10 * columns * rows, 0.5);
+    var anim = badRobot.animations.add('blink');
 		anim.play(5, true);
 	},
+	setupArrows (){
+		this.add.button(910, 475, 'upArrow', this.pressUpArrow, this);
+		this.add.button(945, 510, 'rightArrow', this.pressRightArrow, this);
+		this.add.button(910, 545, 'downArrow', this.pressDownArrow, this);
+		this.add.button(875, 510, 'leftArrow', this.pressLeftArrow, this);
+	},
+	pressRightArrow (){
+		this.input.value = 'Robby.goRight()';
+		var result = this.keyDown();
+		if(result === 'GOING') this.robbyGo(1, 0);
+	},
+	pressUpArrow (){
+		this.input.value = 'Robby.goUp()';
+		var result = this.keyDown();
+		if(result === 'GOING') this.robbyGo(0, 1);
+	},
+	pressDownArrow (){
+		this.input.value = 'Robby.goDown()';
+		var result = this.keyDown();
+		if(result === 'GOING') this.robbyGo(0, -1);
+	},
+	pressLeftArrow (){
+		this.input.value = 'Robby.goLeft()';
+		var result = this.keyDown();
+		if(result === 'GOING') this.robbyGo(-1, 0);
+	},
+	robbyGo(x, y){
+		const rows = this.levelGrid.length;
+		const columns = this.levelGrid[0].length;
+		const offset = 50;
+		const columnWidth = (this.world.width - 200) / columns;
+		const rowWidth = this.world.height / rows;
+		const finalRadius = Math.min(columnWidth, rowWidth);
+		this.add.tween(this.robbySprite).to( { x: this.robbySprite.x + finalRadius * x * 2, y: this.robbySprite.y - finalRadius * y * 2 }, 250, Phaser.Easing.Linear.None, true);
+	},
+	addTweenedSprite (spriteName, positionX, positionY, delay, endScale){
+		var sprite = this.add.sprite(positionX, positionY, spriteName);
+		sprite.anchor.setTo(0.5, 0.5);
+		sprite.scale.setTo(0, 0);
+		this.add.tween(sprite.scale).to({x: endScale, y: endScale}, 500, Phaser.Easing.Linear.None, true, delay);
+		return sprite;
+	},
 	getLevelString (){
-		var level = "o-oa  o-o-o\n\
+		var level = "R-oa  o-o-o\n\
   |   | | |\n\
 o-o o-o o-o\n\
 |   |   | |\n\
-o-o-o   o-o\n\
+o-o-o   E-o\n\
   |       c\n\
   o-ob     ";
 		return level;
+	},
+	createArray (length){
+    var arr = new Array(length || 0);
+    var i = length;
+
+    if (arguments.length > 1) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        while(i--) arr[length-1 - i] = this.createArray.apply(this, args);
+    }
+
+    return arr;
 	}
 };

@@ -9,6 +9,12 @@ Robby.go = function(){
   return 'GOING'
 }
 
+Robby.goRight = function(){
+  this.windingKey.wind();
+  this.navigation.setNavigation();
+  return this.go();
+}
+
 Robby.windingKey.wind = function(){
   this.windCalled = true
   return 'Succes!'
