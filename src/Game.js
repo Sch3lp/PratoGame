@@ -1,7 +1,7 @@
 Prato.Game = function(game){
-		this.terminalHistory = ['', '', ''];
-		this.arrowHistory = ['   ', '   ', ' > '];
-		this.startText = ['WELCOME TO THE PRATO ROBBY ASSEMBLING TOOL OPERATOR', 'ALSO KNOWN AS P.R.A.T.O.', 'PLEASE REASSEMBLE ROBBY'];
+		this.terminalHistory = ['', '', '', '', ''];
+		this.arrowHistory = ['   ', '   ', '   ', '   ', ' > '];
+		this.startText = ['---------------------------------------------------', 'WELCOME TO THE PRATO ROBBY ASSEMBLING TOOL OPERATOR', 'ALSO KNOWN AS P.R.A.T.O.', 'PLEASE REASSEMBLE ROBBY', '---------------------------------------------------'];
 		this.input;
 		this.lastSaidStuff;
 		this.otherArrows;
@@ -12,7 +12,7 @@ Prato.Game.prototype = {
 	create: function(){
 		this.stage.backgroundColor = "#383838";
 
-		this.add.sprite(0, 600, 'divider');
+		this.add.sprite(0, 546, 'divider');
 		this.setupGrid();
 		this.setupCharacters();
 		this.setupArrows();
@@ -30,8 +30,8 @@ Prato.Game.prototype = {
 		var me = this;
 		this.input.keyListener = function (evt) {
 			this.value = this.domElement.value;
-			if (evt.keyCode === 13) {
-				me.keyDown();
+			if (evt.keyCode === Phaser.Keyboard.ENTER) {
+				me.enterKeyDown();
 			}
 			this.updateText();
 			this.updateCursor();
@@ -39,15 +39,15 @@ Prato.Game.prototype = {
 			evt.preventDefault();
 		};
 
-		this.otherArrows = this.add.text(0, 638, this.arrowHistory.join('\n'), { font: "20px Courier", fill: "#FFFFFF" });
-		this.lastSaidStuff = this.add.text(32, 638, this.terminalHistory.join('\n'), { font: "20px Courier", fill: "#FFFFFF" });
+		this.otherArrows = this.add.text(0, 584, this.arrowHistory.join('\n'), { font: "20px Courier", fill: "#FFFFFF" });
+		this.lastSaidStuff = this.add.text(32, 584, this.terminalHistory.join('\n'), { font: "20px Courier", fill: "#FFFFFF" });
 		var typeInArrow = this.add.text(0, 718, ' > ', { font: "20px Courier", fill: "#FFFFFF" });
 
 		this.typeDelayed(this.startText.join('\n'));
 	},
 	update: function () {
 	},
-	keyDown: function () {
+	enterKeyDown: function () {
 		// Add new > line
 		this.arrowHistory.splice(0,1);
 		this.arrowHistory.push(' > ');
@@ -74,10 +74,10 @@ Prato.Game.prototype = {
 				this.updateArrows();
 			} else{
 				this.lastSaidStuff.setText(this.lastSaidStuff._text + typeLeft[0]);
-				this.terminalHistory[2] += typeLeft[0];
+				this.terminalHistory[4] += typeLeft[0];
 			}
 			if(typeLeft.substring(1).length === 0) return;
-			this.time.events.add(25, this.typeDelayed, this, typeLeft.substring(1));
+			this.time.events.add(15, this.typeDelayed, this, typeLeft.substring(1));
 	},
 	evaluateCall: function (command){
 		try {
@@ -88,7 +88,7 @@ Prato.Game.prototype = {
 		}
 	},
 	updateArrows: function (){
-		this.arrowHistory.splice(0,1);
+		this.arrowHistory.splice(0, 1);
 		this.arrowHistory.push('   ');
 		this.otherArrows.setText(this.arrowHistory.join('\n'))
 
@@ -151,29 +151,29 @@ Prato.Game.prototype = {
 		anim.play(5, true);
 	},
 	setupArrows (){
-		this.add.button(910, 475, 'upArrow', this.pressUpArrow, this);
-		this.add.button(945, 510, 'rightArrow', this.pressRightArrow, this);
-		this.add.button(910, 545, 'downArrow', this.pressDownArrow, this);
-		this.add.button(875, 510, 'leftArrow', this.pressLeftArrow, this);
+		this.add.button(910, 425, 'upArrow', this.pressUpArrow, this);
+		this.add.button(945, 460, 'rightArrow', this.pressRightArrow, this);
+		this.add.button(910, 495, 'downArrow', this.pressDownArrow, this);
+		this.add.button(875, 460, 'leftArrow', this.pressLeftArrow, this);
 	},
 	pressRightArrow (){
 		this.input.value = 'Robby.goRight()';
-		var result = this.keyDown();
+		var result = this.enterKeyDown();
 		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
 	},
 	pressUpArrow (){
 		this.input.value = 'Robby.goUp()';
-		var result = this.keyDown();
+		var result = this.enterKeyDown();
 		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
 	},
 	pressDownArrow (){
 		this.input.value = 'Robby.goDown()';
-		var result = this.keyDown();
+		var result = this.enterKeyDown();
 		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
 	},
 	pressLeftArrow (){
 		this.input.value = 'Robby.goLeft()';
-		var result = this.keyDown();
+		var result = this.enterKeyDown();
 		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
 	},
 	robbyGo(x, y){
@@ -183,13 +183,14 @@ Prato.Game.prototype = {
 		const columnWidth = (this.world.width - 200) / columns;
 		const rowWidth = this.world.height / rows;
 		const finalRadius = Math.min(columnWidth, rowWidth);
-		this.add.tween(this.robbySprite).to( { x: this.robbySprite.x + finalRadius * x * 2, y: this.robbySprite.y - finalRadius * y * 2 }, 250, Phaser.Easing.Linear.None, true);
+		this.add.tween(this.robbySprite).to( { x: this.robbySprite.x + finalRadius * x * 2, y: this.robbySprite.y - finalRadius * y * 2 }, 250, Phaser.Easing.Linear.In, true);
+		this.add.tween(this.robbySprite.scale).to( { x: this.robbySprite.scale.x * 0.8, y: this.robbySprite.scale.y * 0.8 }, 125, Phaser.Easing.Linear.InOut, true).yoyo(true);
 	},
 	addTweenedSprite (spriteName, positionX, positionY, delay, endScale){
 		var sprite = this.add.sprite(positionX, positionY, spriteName);
 		sprite.anchor.setTo(0.5, 0.5);
 		sprite.scale.setTo(0, 0);
-		this.add.tween(sprite.scale).to({x: endScale, y: endScale}, 500, Phaser.Easing.Linear.None, true, delay);
+		this.add.tween(sprite.scale).to({x: endScale, y: endScale}, 500, Phaser.Easing.Linear.In, true, delay);
 		return sprite;
 	},
 	getLevelString (){
