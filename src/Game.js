@@ -159,22 +159,22 @@ Prato.Game.prototype = {
 	pressRightArrow (){
 		this.input.value = 'Robby.goRight()';
 		var result = this.keyDown();
-		if(result === 'GOING') this.robbyGo(1, 0);
+		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
 	},
 	pressUpArrow (){
 		this.input.value = 'Robby.goUp()';
 		var result = this.keyDown();
-		if(result === 'GOING') this.robbyGo(0, 1);
+		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
 	},
 	pressDownArrow (){
 		this.input.value = 'Robby.goDown()';
 		var result = this.keyDown();
-		if(result === 'GOING') this.robbyGo(0, -1);
+		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
 	},
 	pressLeftArrow (){
 		this.input.value = 'Robby.goLeft()';
 		var result = this.keyDown();
-		if(result === 'GOING') this.robbyGo(-1, 0);
+		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
 	},
 	robbyGo(x, y){
 		const rows = this.levelGrid.length;

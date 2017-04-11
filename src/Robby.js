@@ -1,6 +1,6 @@
 var Robby = {
   windingKey : { windCalled: false},
-  navigation : { setNavigationCalled: false}
+  navigation : { setNavigationCalled: false, x: 0, y: 0}
 };
 
 Robby.go = function(){
@@ -11,7 +11,7 @@ Robby.go = function(){
 
 Robby.goRight = function(){
   this.windingKey.wind();
-  this.navigation.setNavigation();
+  this.navigation.setNavigation(1, 0);
   return this.go();
 }
 
@@ -20,7 +20,9 @@ Robby.windingKey.wind = function(){
   return 'Succes!'
 }
 
-Robby.navigation.setNavigation = function(){
+Robby.navigation.setNavigation = function(x, y){
   this.setNavigationCalled = true
+  this.x = x
+  this.y = y
   return 'Succes!'
 }
