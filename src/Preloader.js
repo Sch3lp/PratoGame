@@ -11,7 +11,6 @@ Prato.Preloader.prototype = {
       this.load.image('downArrow', 'img/Down.png');
       this.load.image('leftArrow', 'img/Left.png');
 			this.load.spritesheet('badrobot', 'img/BadRobot.png', 178, 178, 2);
-			this.add.plugin(PhaserInput.Plugin);
 	},
 	create: function(){
 		this.state.start('Game');

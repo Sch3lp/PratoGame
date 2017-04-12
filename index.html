@@ -4,25 +4,26 @@
         <meta charset="UTF-8" />
         <title>Prato Game!</title>
         <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
-		<script src="src/phaser-input.js"></script>
-		<script src="src/Boot.js"></script>
-		<script src="src/Preloader.js"></script>
-		<script src="src/Game.js"></script>
-		<script src="src/Robby.js"></script>
-		<link rel="stylesheet" type="text/css" href="style.css" />
+    		<script src="src/Boot.js"></script>
+    		<script src="src/Preloader.js"></script>
+    		<script src="src/Game.js"></script>
+    		<script src="src/Robby.js"></script>
+    		<link rel="stylesheet" type="text/css" href="style.css" />
     </head>
-    <body><div id="container">
-    <script type="text/javascript">
-	(function() {
-		var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'game');
+    <body>
+      <div id="container">
+        <script type="text/javascript">
+        	(function() {
+        		var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'container');
 
-		game.state.add('Boot', Prato.Boot);
-		game.state.add('Preloader', Prato.Preloader);
-		game.state.add('Game', Prato.Game);
+        		game.state.add('Boot', Prato.Boot);
+        		game.state.add('Preloader', Prato.Preloader);
+        		game.state.add('Game', Prato.Game);
 
-		game.state.start('Boot');
-	})();
-    </script></div>
-
+        		game.state.start('Boot');
+        	})();
+        </script>
+        <textarea id="commandInput" cols="40" rows="5" autofocus></textarea>
+      </div>
     </body>
 </html>

@@ -1,12 +1,14 @@
 Prato.Game = function(game){
 		this.terminalHistory = ['', '', '', '', ''];
-		this.arrowHistory = ['   ', '   ', '   ', '   ', ' > '];
+		this.arrowHistory = ['   ', '   ', '   ', '   ', ' < '];
 		this.startText = ['---------------------------------------------------', 'WELCOME TO THE PRATO ROBBY ASSEMBLING TOOL OPERATOR', 'ALSO KNOWN AS P.R.A.T.O.', 'PLEASE REASSEMBLE ROBBY', '---------------------------------------------------'];
-		this.input;
 		this.lastSaidStuff;
 		this.otherArrows;
 		this.levelGrid = this.createGrid();
 		this.robbySprite;
+		this.enterKey;
+		this.inputField;
+		this.shiftKey;
 };
 Prato.Game.prototype = {
 	create: function(){
@@ -16,28 +18,12 @@ Prato.Game.prototype = {
 		this.setupGrid();
 		this.setupCharacters();
 		this.setupArrows();
-		this.input = this.add.inputField(32, 718,{
-			width: 960,
-			height: 20,
-			font: '20px Courier',
-			backgroundColor: '#000000',
-			fill: '#FFFFFF',
-			cursorColor: '#FFFFFF',
-			fillAlpha: 0,
-		});
 
-		this.input.startFocus();
+		this.inputField = document.getElementById("commandInput");
+
 		var me = this;
-		this.input.keyListener = function (evt) {
-			this.value = this.domElement.value;
-			if (evt.keyCode === Phaser.Keyboard.ENTER) {
-				me.enterKeyDown();
-			}
-			this.updateText();
-			this.updateCursor();
-			this.updateSelection();
-			evt.preventDefault();
-		};
+		this.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.add(this.enterKeyDown, this);
+		this.shiftKey = this.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
 
 		this.otherArrows = this.add.text(0, 584, this.arrowHistory.join('\n'), { font: "20px Courier", fill: "#FFFFFF" });
 		this.lastSaidStuff = this.add.text(32, 584, this.terminalHistory.join('\n'), { font: "20px Courier", fill: "#FFFFFF" });
@@ -48,9 +34,13 @@ Prato.Game.prototype = {
 	update: function () {
 	},
 	enterKeyDown: function () {
+		if(this.shiftKey.isDown){
+			this.inputField.value += '\n';
+			return;
+		}
 		// Add new > line
 		this.arrowHistory.splice(0,1);
-		this.arrowHistory.push(' > ');
+		this.arrowHistory.push(' < ');
 		this.otherArrows.setText(this.arrowHistory.join('\n'))
 
 		// Throw away oldest line and provide clear new line
@@ -58,11 +48,10 @@ Prato.Game.prototype = {
 		this.terminalHistory.splice(0,1);
 		this.lastSaidStuff.setText(this.terminalHistory.join('\n'));
 
-		var result = this.evaluateCall(this.input.value);
+		var result = this.evaluateCall(this.inputField.value);
 
-		this.typeDelayed(this.input.value + '\n' + result);
-		this.input.resetText();
-		this.input.startFocus();
+		this.typeDelayed(this.inputField.value + '\n' + result);
+		this.inputField.value = '';
 		return result;
 	},
 
@@ -157,22 +146,22 @@ Prato.Game.prototype = {
 		this.add.button(875, 460, 'leftArrow', this.pressLeftArrow, this);
 	},
 	pressRightArrow (){
-		this.input.value = 'Robby.goRight()';
+		this.inputField.value = 'Robby.goRight()';
 		var result = this.enterKeyDown();
 		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
 	},
 	pressUpArrow (){
-		this.input.value = 'Robby.goUp()';
+		this.inputField.value = 'Robby.goUp()';
 		var result = this.enterKeyDown();
 		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
 	},
 	pressDownArrow (){
-		this.input.value = 'Robby.goDown()';
+		this.inputField.value = 'Robby.goDown()';
 		var result = this.enterKeyDown();
 		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
 	},
 	pressLeftArrow (){
-		this.input.value = 'Robby.goLeft()';
+		this.inputField.value = 'Robby.goLeft()';
 		var result = this.enterKeyDown();
 		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
 	},
