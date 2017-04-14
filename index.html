@@ -4,6 +4,12 @@
         <meta charset="UTF-8" />
         <title>Prato Game!</title>
         <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
+        <link rel="stylesheet" href="lib/codemirror.css">
+        <script src="lib/codemirror.js"></script>
+        <script src="addon/scroll/simplescrollbars.js"></script>
+        <link rel="stylesheet" href="addon/scroll/simplescrollbars.css">
+        <link rel="stylesheet" href="theme/night.css">
+        <script src="mode/javascript/javascript.js"></script>
     		<script src="src/Boot.js"></script>
     		<script src="src/Preloader.js"></script>
     		<script src="src/Game.js"></script>
@@ -23,7 +29,12 @@
         		game.state.start('Boot');
         	})();
         </script>
-        <textarea id="commandInput" cols="40" rows="5" autofocus></textarea>
+        <div id="historyDiv">
+          <textarea id="historyTextArea"></textarea>
+        </div>
+        <div id="commandDiv">
+          <textarea id="commandInput" autofocus></textarea>
+        </div>
       </div>
     </body>
 </html>

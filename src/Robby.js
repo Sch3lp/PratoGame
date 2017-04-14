@@ -26,3 +26,5 @@ Robby.navigation.setNavigation = function(x, y){
   this.y = y
   return 'Succes!'
 }
+
+help = () => 'No cheating!'

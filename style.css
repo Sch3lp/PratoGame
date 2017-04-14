@@ -1,28 +1,40 @@
 body {
   background: #282828;
+  margin:0px;
 }
 #container {
   position: absolute;
   height: 100%;
   width: 100%;
 }
-textarea {
+#commandDiv .cm-s-night.CodeMirror{
+  background: #282828;
   position: absolute;
-  background: transparent;
-  color: white;
   border: 0 none;
-  resize: none;
   font-family:"Courier";
   font-size: 20px;
   margin-left: auto;
   margin-right: auto;
   display: block;
-  width:1024px;
-  top: 790px;
-  left: 432px;
-  box-sizing: border-box;
-  padding-left: 32px;
+  width:968px;
+  height: 125px;
+  top: 705px;
+  left: 480px;
 }
-textarea:focus {
-  outline-width: 0;
+#historyDiv .cm-s-night.CodeMirror{
+  background: transparent;
+  position: absolute;
+  border: 0 none;
+  font-family:"Courier";
+  font-size: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width:968px;
+  height: 125px;
+  top: 570px;
+  left: 480px;
+}
+.CodeMirror-simplescroll-horizontal div, .CodeMirror-simplescroll-vertical div{
+  background: #282828;
 }
