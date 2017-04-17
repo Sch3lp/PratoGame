@@ -2,7 +2,6 @@ Prato.Game = function(game){
 		this.arrowHistory = ['   ', '   ', '   ', '   ', ' < '];
 		this.startText = ['---------------------------------------------------', 'WELCOME TO THE PRATO ROBBY ASSEMBLING TOOL OPERATOR', 'ALSO KNOWN AS P.R.A.T.O.', 'PLEASE REASSEMBLE ROBBY', '---------------------------------------------------'];
 		this.otherArrows;
-		this.levelGrid = this.createGrid();
 		this.robbySprite;
 		this.editor;
 		this.history;
@@ -14,7 +13,7 @@ Prato.Game.prototype = {
 		this.stage.backgroundColor = "#383838";
 
 		this.add.sprite(0, 446, 'divider');
-		this.setupGrid();
+		gridGenerator.setupGrid(this);
 		this.setupCharacters();
 		this.setupArrows();
 
@@ -93,52 +92,9 @@ Prato.Game.prototype = {
 		this.otherArrows.setText(this.arrowHistory.join('\n'))
 
 	},
-	createGrid (){
-		var level = this.getLevelString();
-		var oneLineLevel = level.replace(/(\r\n|\n|\r)/gm,"");
-		const offset = 50;
-		const columns = Math.max(...level.split('\n').map((line)=>line.length));
-		const rows = level.split('\n').length;
-
-		var grid = this.createArray(rows, columns)
-
-		for(var i = 0; i < rows; i++){
-				for(var j = 0; j < columns; j++){
-					grid[i][j] = oneLineLevel[i * columns + j];
-			}
-		}
-		return grid;
-	},
-	setupGrid (){
-		const rows = this.levelGrid.length;
-		const columns = this.levelGrid[0].length;
-		const offset = 50;
-		const columnWidth = (this.world.width - 200) / columns;
-		const rowHeight = (this.world.height - 400) / rows;
-		const finalRadius = Math.min(columnWidth, rowHeight);
-
-		for(var i = 0; i < rows; i++){
-				for(var j = 0; j < columns; j++){
-					var spriteName = this.getGridSpriteForCharacter(this.levelGrid[i][j]);
-					this.addTweenedSprite(spriteName, offset + j * finalRadius, offset + i * finalRadius, 10 * i * columns + j, 1);
-			}
-		}
-	},
-	getGridSpriteForCharacter(character){
-		switch(character){
-			case 'o':
-			case 'R':
-			case 'E':
-				return 'circle';
-			case '-':
-				return 'horLine';
-			case '|':
-				return 'vertLine';
-		}
-	},
 	setupCharacters (){
-		const rows = this.levelGrid.length;
-		const columns = this.levelGrid[0].length;
+		const rows = gridGenerator.levelGrid.length;
+		const columns = gridGenerator.levelGrid[0].length;
 		const offset = 50;
 		const columnWidth = (this.world.width - 200) / columns;
 		const rowHeight = this.world.height / rows;
@@ -157,31 +113,31 @@ Prato.Game.prototype = {
 		this.add.button(875, 360, 'leftArrow', this.pressLeftArrow, this);
 	},
 	pressRightArrow (){
-		this.editor.setValue('Robby.goRight()');
+		this.editor.setValue('robby.goRight()');
 		var result = this.enterKeyDown();
-		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
+		if(result === 'GOING') this.robbyGo(robby.navigation.x, robby.navigation.y);
 	},
 	pressUpArrow (){
-		this.editor.setValue('Robby.goUp()');
+		this.editor.setValue('robby.goUp()');
 		var result = this.enterKeyDown();
-		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
+		if(result === 'GOING') this.robbyGo(robby.navigation.x, robby.navigation.y);
 	},
 	pressDownArrow (){
-		this.editor.setValue('Robby.goDown()');
+		this.editor.setValue('robby.goDown()');
 		var result = this.enterKeyDown();
-		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
+		if(result === 'GOING') this.robbyGo(robby.navigation.x, robby.navigation.y);
 	},
 	pressLeftArrow (){
-		this.editor.setValue('Robby.goLeft()');
+		this.editor.setValue('robby.goLeft()');
 		var result = this.enterKeyDown();
-		if(result === 'GOING') this.robbyGo(Robby.navigation.x, Robby.navigation.y);
+		if(result === 'GOING') this.robbyGo(robby.navigation.x, robby.navigation.y);
 	},
 	robbyGo(x, y){
-		const rows = this.levelGrid.length;
-		const columns = this.levelGrid[0].length;
+		const rows = gridGenerator.levelGrid.length;
+		const columns = gridGenerator.levelGrid[0].length;
 		const offset = 50;
 		const columnWidth = (this.world.width - 200) / columns;
-		const rowHeight = this.world.height / rows;
+		const rowHeight = (this.world.height - 400) / rows;
 		const finalRadius = Math.min(columnWidth, rowHeight);
 		this.add.tween(this.robbySprite).to( { x: this.robbySprite.x + finalRadius * x * 2, y: this.robbySprite.y - finalRadius * y * 2 }, 250, Phaser.Easing.Linear.In, true);
 		this.add.tween(this.robbySprite.scale).to( { x: this.robbySprite.scale.x * 0.8, y: this.robbySprite.scale.y * 0.8 }, 125, Phaser.Easing.Linear.InOut, true).yoyo(true);
@@ -192,26 +148,5 @@ Prato.Game.prototype = {
 		sprite.scale.setTo(0, 0);
 		this.add.tween(sprite.scale).to({x: endScale, y: endScale}, 500, Phaser.Easing.Linear.In, true, delay);
 		return sprite;
-	},
-	getLevelString (){
-		var level = "R-oa  o-o-o\n\
-  |   | | |\n\
-o-o o-o o-o\n\
-|   |   | |\n\
-o-o-o   E-o\n\
-  |       c\n\
-  o-ob     ";
-		return level;
-	},
-	createArray (length){
-    var arr = new Array(length || 0);
-    var i = length;
-
-    if (arguments.length > 1) {
-        var args = Array.prototype.slice.call(arguments, 1);
-        while(i--) arr[length-1 - i] = this.createArray.apply(this, args);
-    }
-
-    return arr;
 	}
 };

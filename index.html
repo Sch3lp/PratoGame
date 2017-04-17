@@ -1,40 +1,46 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>Prato Game!</title>
-        <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
-        <link rel="stylesheet" href="lib/codemirror.css">
-        <script src="lib/codemirror.js"></script>
-        <script src="addon/scroll/simplescrollbars.js"></script>
-        <link rel="stylesheet" href="addon/scroll/simplescrollbars.css">
-        <link rel="stylesheet" href="theme/night.css">
-        <script src="mode/javascript/javascript.js"></script>
-    		<script src="src/Boot.js"></script>
-    		<script src="src/Preloader.js"></script>
-    		<script src="src/Game.js"></script>
-    		<script src="src/Robby.js"></script>
-    		<link rel="stylesheet" type="text/css" href="style.css" />
-    </head>
-    <body>
-      <div id="container">
-        <script type="text/javascript">
-        	(function() {
-        		var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'container');
 
-        		game.state.add('Boot', Prato.Boot);
-        		game.state.add('Preloader', Prato.Preloader);
-        		game.state.add('Game', Prato.Game);
+<head>
+  <meta charset="UTF-8" />
+  <title>Prato Game!</title>
+  <link rel="stylesheet" href="addon/scroll/simplescrollbars.css">
+  <link rel="stylesheet" href="theme/night.css">
+  <link rel="stylesheet" href="lib/codemirror.css">
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
+  <script src="lib/codemirror.js"></script>
+  <script src="addon/scroll/simplescrollbars.js"></script>
+  <script src="mode/javascript/javascript.js"></script>
+  <script src="src/Boot.js"></script>
+  <script src="src/Preloader.js"></script>
+  <script src="src/Game.js"></script>
+  <script src="src/Robby.js"></script>
+  <script src="src/GridGenerator.js"></script>
+</head>
 
-        		game.state.start('Boot');
-        	})();
-        </script>
-        <div id="historyDiv">
-          <textarea id="historyTextArea"></textarea>
-        </div>
-        <div id="commandDiv">
-          <textarea id="commandInput" autofocus></textarea>
-        </div>
-      </div>
-    </body>
+<body>
+  <div id="phaserContainer">
+    <script type="text/javascript">
+      (function () {
+        var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'phaserContainer');
+
+        game.state.add('Boot', Prato.Boot);
+        game.state.add('Preloader', Prato.Preloader);
+        game.state.add('Game', Prato.Game);
+
+        game.state.start('Boot');
+      })();
+    </script>
+  </div>
+  <div id="codeMirrorDiv">
+    <div id="historyDiv">
+      <textarea id="historyTextArea"></textarea>
+    </div>
+    <div id="commandDiv">
+      <textarea id="commandInput" autofocus></textarea>
+    </div>
+  </div>
+</body>
+
 </html>
