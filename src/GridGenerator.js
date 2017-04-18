@@ -20,31 +20,38 @@ o-o-o   E-o\n\
 
         for (var i = 0; i < rows; i++) {
             for (var j = 0; j < columns; j++) {
-                if (!grid[i]) grid[i] = [];
-                grid[i][j] = oneLineLevel[i * columns + j];
+                if (!grid[j]) grid[j] = [];
+                grid[j][i] = oneLineLevel[i * columns + j];
             }
         }
         return grid;
     };
     this.levelGrid = this.createGrid();
+    this.gridRadius;
+    this.game;
 }
 
 var gridGenerator = new GridGenerator();
 
-GridGenerator.prototype.setupGrid = function(game) {
-    const rows = this.levelGrid.length;
-    const columns = this.levelGrid[0].length;
+GridGenerator.prototype.setupGrid = function (game) {
+    this.game = game;
+    const rows = this.levelGrid[0].length;
+    const columns = this.levelGrid.length;
+    this.gridRadius = this.calculateGridRadius(game, rows, columns)
     const offset = 50;
-    const columnWidth = (game.world.width - 200) / columns;
-    const rowHeight = (game.world.height - 400) / rows;
-    const finalRadius = Math.min(columnWidth, rowHeight);
 
     for (var i = 0; i < rows; i++) {
         for (var j = 0; j < columns; j++) {
-            var spriteName = this.getGridSpriteForCharacter(this.levelGrid[i][j]);
-            game.addTweenedSprite(spriteName, offset + j * finalRadius, offset + i * finalRadius, 10 * i * columns + j, 1);
+            var spriteName = this.getGridSpriteForCharacter(this.levelGrid[j][i]);
+            game.addTweenedSprite(spriteName, offset + j * this.gridRadius, offset + i * this.gridRadius, 10 * i * columns + j, 1);
         }
     }
+};
+
+GridGenerator.prototype.calculateGridRadius = function (game, rows, columns) {    
+    const columnWidth = (game.world.width - 200) / columns;
+    const rowHeight = (game.world.height - 400) / rows;
+    return Math.min(columnWidth, rowHeight);
 };
 GridGenerator.prototype.getGridSpriteForCharacter = (character) => {
     switch (character) {
@@ -58,3 +65,24 @@ GridGenerator.prototype.getGridSpriteForCharacter = (character) => {
             return 'vertLine';
     }
 };
+GridGenerator.prototype.convertGridToPixels = function(gridX, gridY) {
+  const rows = gridGenerator.levelGrid[0].length;
+  const columns = gridGenerator.levelGrid.length;
+  const offset = 50;
+
+  return {
+      x: offset + gridX * this.gridRadius,
+      y: offset + gridY * this.gridRadius
+  };
+};
+GridGenerator.prototype.convertPixelsToGrid = function(pixelX, pixelY) {
+  const rows = gridGenerator.levelGrid[0].length;
+  const columns = gridGenerator.levelGrid.length;
+  const offset = 50;
+
+  return {
+      x: Math.round((pixelX - offset) / this.gridRadius),
+      y: Math.round((pixelY - offset) / this.gridRadius)
+  };
+};
+

@@ -10,6 +10,7 @@ body {
   left: calc(50% - 512px);  
 }
 #codeMirrorDiv {
+  display:none;
   width: 1024px;
   height: 768px;
   position: absolute;
@@ -25,7 +26,8 @@ body {
   pointer-events: all;
 }
 #commandDiv .cm-s-night.CodeMirror{
-  background: #282828;height: 125px;
+  background: #282828;
+  height: 125px;
   top: 487px;
 }
 #historyDiv .cm-s-night.CodeMirror{
