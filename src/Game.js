@@ -15,8 +15,9 @@ Prato.Game.prototype = {
 		this.setupCharacters();
 		this.setupArrows();
 
+		document.getElementById("codeMirrorDiv").style.display = 'block';
 		var inputField = document.getElementById("commandInput");
-		this.editor = CodeMirror.fromTextArea(inputField, { mode: "javascript", theme: 'night' });
+		this.editor = CodeMirror.fromTextArea(inputField, { mode: "javascript", theme: 'night'});
 		var historyField = document.getElementById("historyTextArea");
 		this.history = CodeMirror.fromTextArea(historyField, {
 			mode: "javascript",
@@ -33,7 +34,6 @@ Prato.Game.prototype = {
 		var typeInArrow = this.add.text(0, 618, ' > ', { font: "20px Courier", fill: "#FFFFFF" });
 
 		this.typeDelayed(this.startText.join('\n'));
-		document.getElementById("codeMirrorDiv").style.display = 'block';
 	},
 	update: function () {
 	},

@@ -99,4 +99,5 @@ hack = () => {
     if(problem) return problem;
     return 'GOING!';
   }
+  return 'Hack successful';
 }
