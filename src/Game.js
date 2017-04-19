@@ -8,16 +8,16 @@ Prato.Game = function (game) {
 };
 Prato.Game.prototype = {
 	create: function () {
-		this.stage.backgroundColor = "#383838";
+		this.stage.backgroundColor = "#202020";
 
-		this.add.sprite(0, 446, 'divider');
+		//this.add.sprite(0, 446, 'divider');
 		gridGenerator.setupGrid(this);
 		this.setupCharacters();
 		this.setupArrows();
 
 		document.getElementById("codeMirrorDiv").style.display = 'block';
 		var inputField = document.getElementById("commandInput");
-		this.editor = CodeMirror.fromTextArea(inputField, { mode: "javascript", theme: 'night'});
+		this.editor = CodeMirror.fromTextArea(inputField, { mode: "javascript", theme: 'night' });
 		var historyField = document.getElementById("historyTextArea");
 		this.history = CodeMirror.fromTextArea(historyField, {
 			mode: "javascript",
@@ -38,7 +38,7 @@ Prato.Game.prototype = {
 	update: function () {
 	},
 	enterKeyDown: function () {
-		if(this.stillTyping) return;
+		if (this.stillTyping) return;
 		this.stillTyping = true;
 		var input = this.editor.getValue();
 		if (input.trim() === '') {
@@ -74,7 +74,7 @@ Prato.Game.prototype = {
 		}
 		this.history.setValue(this.history.getValue() + typeLeft[0]);
 		this.history.scrollTo(null, this.history.getScrollInfo().height);
-		if (typeLeft.substring(1).length === 0){
+		if (typeLeft.substring(1).length === 0) {
 			this.stillTyping = false;
 			return;
 		}
@@ -103,10 +103,8 @@ Prato.Game.prototype = {
 		const finalRadius = Math.min(columnWidth, rowHeight);
 
 		robby.init(this);
+		enemy.init(this);
 
-		var badRobot = this.addTweenedSprite('badrobot', 470, 250, 10 * columns * rows, 0.5);
-		var anim = badRobot.animations.add('blink');
-		anim.play(5, true);
 	},
 	setupArrows() {
 		this.add.button(910, 325, 'upArrow', this.pressUpArrow, this);

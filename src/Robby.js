@@ -2,7 +2,7 @@ function Robby() {
   this.windingKey = new WindingKey();
   this.navigation = new Navigation();
   this.game;
-  this.robbySprite;
+  this.sprite;
   this.emitter;
 };
 
@@ -32,12 +32,13 @@ Robby.prototype.go = function () {
   if (!this.canYouGoThere(this.navigation.x, this.navigation.y)) return 'I cannot go there!'
   this.windingKey.windCalled = false;
   this.navigation.setNavigationCalled = false;
-  const robbyPosition = gridGenerator.convertPixelsToGrid(this.robbySprite.x, this.robbySprite.y);
+  const robbyPosition = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y);
   const destination = gridGenerator.convertGridToPixels(robbyPosition.x + this.navigation.x * 2, robbyPosition.y + this.navigation.y * 2);
-  
-  this.game.add.tween(this.robbySprite).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
+
+  this.game.add.tween(this.sprite).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
   this.game.add.tween(this.emitter).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
-  this.game.add.tween(this.robbySprite.scale).to({ x: this.robbySprite.scale.x * 0.8, y: this.robbySprite.scale.y * 0.8 }, 125, Phaser.Easing.Linear.InOut, true).yoyo(true);
+  this.game.add.tween(this.sprite.scale).to({ x: this.sprite.scale.x * 0.8, y: this.sprite.scale.y * 0.8 }, 125, Phaser.Easing.Linear.InOut, true).yoyo(true);
+  enemy.notify();
 }
 
 Robby.prototype.init = function (game) {
@@ -45,31 +46,33 @@ Robby.prototype.init = function (game) {
   const rows = gridGenerator.levelGrid.length;
   const columns = gridGenerator.levelGrid[0].length;
   const offset = 50;
-  
-	this.emitter = game.add.emitter(offset, offset, 100);
+
+  this.emitter = game.add.emitter(offset, offset, 100);
   this.emitter.makeParticles('dust');
   this.emitter.setAlpha(1, 0, 500);
   this.emitter.setScale(0, 0.25, 0, 0.25, 500, Phaser.Easing.Quintic.Out);
   this.emitter.maxParticleSpeed = new Phaser.Point(50, 50);
   this.emitter.minParticleSpeed = new Phaser.Point(-50, -50);
-  game.time.events.add(10 * columns * rows + 500, ()=>{this.emitter.start(false, 500, 10);}, this);
+  game.time.events.add(10 * columns * rows + 500, () => { this.emitter.start(false, 500, 10); }, this);
 
-  this.robbySprite = game.addTweenedSprite('robby', offset, offset, 10 * columns * rows, 0.2);
+  this.sprite = game.addTweenedSprite('robby', offset, offset, 10 * columns * rows, 0.2);
 }
 
 Robby.prototype.goRight = function () {
   this.windingKey.wind();
   this.navigation.setNavigation(1, 0);
   const problem = this.go();
-  if(problem) return problem;
+  if (problem) return problem;
   return 'GOING!';
 }
 
 
 
 Robby.prototype.canYouGoThere = function (diffX, diffY) {
-  const position = gridGenerator.convertPixelsToGrid(this.robbySprite.x, this.robbySprite.y);
-  return ['-', '|'].includes(gridGenerator.levelGrid[position.x + diffX][position.y + diffY]);
+  const position = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y);
+  return gridGenerator.levelGrid[position.x + diffX]
+    && gridGenerator.levelGrid[position.x + diffX][position.y + diffY]
+    && ['-', '|'].includes(gridGenerator.levelGrid[position.x + diffX][position.y + diffY]);
 }
 
 help = () => 'No cheating!'
@@ -80,7 +83,7 @@ hack = () => {
     this.windingKey.wind();
     this.navigation.setNavigation(0, -1);
     const problem = this.go();
-    if(problem) return problem;
+    if (problem) return problem;
     return 'GOING!';
   }
 
@@ -88,7 +91,7 @@ hack = () => {
     this.windingKey.wind();
     this.navigation.setNavigation(-1, 0);
     const problem = this.go();
-    if(problem) return problem;
+    if (problem) return problem;
     return 'GOING!';
   }
 
@@ -96,7 +99,7 @@ hack = () => {
     this.windingKey.wind();
     this.navigation.setNavigation(0, 1);
     const problem = this.go();
-    if(problem) return problem;
+    if (problem) return problem;
     return 'GOING!';
   }
   return 'Hack successful';
