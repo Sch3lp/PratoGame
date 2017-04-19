@@ -65,29 +65,7 @@ Robby.prototype.goRight = function () {
   return 'GOING!';
 }
 
-Robby.prototype.goUp = function () {
-  this.windingKey.wind();
-  this.navigation.setNavigation(0, -1);
-  const problem = this.go();
-  if(problem) return problem;
-  return 'GOING!';
-}
 
-Robby.prototype.goLeft = function () {
-  this.windingKey.wind();
-  this.navigation.setNavigation(-1, 0);
-  const problem = this.go();
-  if(problem) return problem;
-  return 'GOING!';
-}
-
-Robby.prototype.goDown = function () {
-  this.windingKey.wind();
-  this.navigation.setNavigation(0, 1);
-  const problem = this.go();
-  if(problem) return problem;
-  return 'GOING!';
-}
 
 Robby.prototype.canYouGoThere = function (diffX, diffY) {
   const position = gridGenerator.convertPixelsToGrid(this.robbySprite.x, this.robbySprite.y);
@@ -96,3 +74,29 @@ Robby.prototype.canYouGoThere = function (diffX, diffY) {
 
 help = () => 'No cheating!'
 console.log = (value) => value;
+
+hack = () => {
+  Robby.prototype.goUp = function () {
+    this.windingKey.wind();
+    this.navigation.setNavigation(0, -1);
+    const problem = this.go();
+    if(problem) return problem;
+    return 'GOING!';
+  }
+
+  Robby.prototype.goLeft = function () {
+    this.windingKey.wind();
+    this.navigation.setNavigation(-1, 0);
+    const problem = this.go();
+    if(problem) return problem;
+    return 'GOING!';
+  }
+
+  Robby.prototype.goDown = function () {
+    this.windingKey.wind();
+    this.navigation.setNavigation(0, 1);
+    const problem = this.go();
+    if(problem) return problem;
+    return 'GOING!';
+  }
+}
