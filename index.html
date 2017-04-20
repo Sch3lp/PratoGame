@@ -24,7 +24,7 @@
   <div id="phaserContainer">
     <script type="text/javascript">
       (function () {
-        var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'phaserContainer');
+        var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'phaserContainer', null, true);
 
         game.state.add('Boot', Prato.Boot);
         game.state.add('Preloader', Prato.Preloader);

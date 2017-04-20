@@ -38,7 +38,8 @@ Robby.prototype.go = function () {
   this.game.add.tween(this.sprite).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
   this.game.add.tween(this.emitter).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
   this.game.add.tween(this.sprite.scale).to({ x: this.sprite.scale.x * 0.8, y: this.sprite.scale.y * 0.8 }, 125, Phaser.Easing.Linear.InOut, true).yoyo(true);
-  enemy.notify();
+  this.game.time.events.add(250, () => enemy.notify(), this);
+  
 }
 
 Robby.prototype.init = function (game) {
@@ -66,13 +67,16 @@ Robby.prototype.goRight = function () {
   return 'GOING!';
 }
 
-
-
 Robby.prototype.canYouGoThere = function (diffX, diffY) {
   const position = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y);
   return gridGenerator.levelGrid[position.x + diffX]
     && gridGenerator.levelGrid[position.x + diffX][position.y + diffY]
     && ['-', '|'].includes(gridGenerator.levelGrid[position.x + diffX][position.y + diffY]);
+}
+
+Robby.prototype.doABarrelRoll = function () {
+  this.game.add.tween(this.sprite).to( { angle: 359 }, 250, Phaser.Easing.Linear.None, true);
+	this.game.time.events.add(260, () => {this.sprite.angle = 0}, this);
 }
 
 help = () => 'No cheating!'

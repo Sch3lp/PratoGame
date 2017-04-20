@@ -43,6 +43,8 @@ Enemy.prototype.go = function (x, y) {
   this.game.add.tween(this.sprite).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
   this.game.add.tween(this.emitter).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
   this.game.add.tween(this.sprite.scale).to({ x: this.sprite.scale.x * 0.8, y: this.sprite.scale.y * 0.8 }, 125, Phaser.Easing.Linear.InOut, true).yoyo(true);
+
+  this.game.time.events.add(250, () => enemy.getRobbyIfYouCan(), this);
 }
 
 Enemy.prototype.notify = function (game) {
@@ -61,5 +63,18 @@ Enemy.prototype.notify = function (game) {
             this.goingDown = true;
             this.go(0, -1)
         }
+    }
+}
+
+Enemy.prototype.getRobbyIfYouCan = function (game) {
+    const robbyPosition = gridGenerator.convertPixelsToGrid(robby.sprite.x, robby.sprite.y);
+    const enemyPosition = gridGenerator.convertPixelsToGrid(enemy.sprite.x, enemy.sprite.y);
+
+    if(robbyPosition.x === enemyPosition.x && robbyPosition.y === enemyPosition.y){
+        const spawnPosition = gridGenerator.convertGridToPixels(0, 0);
+        robby.sprite.x = spawnPosition.x;
+        robby.sprite.y = spawnPosition.y;
+        robby.emitter.x = spawnPosition.x;
+        robby.emitter.y = spawnPosition.y;
     }
 }

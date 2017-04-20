@@ -1,6 +1,5 @@
 body {
-  background: #282828;
-  margin:0px;
+  background: #383838;
 }
 #phaserContainer {
   width: 1024px;
@@ -21,18 +20,17 @@ body {
 .cm-s-night.CodeMirror{
   font-family:"Courier";
   font-size: 20px;
-  margin-left: 32px;
-  margin-right: 32px;
   pointer-events: all;
 }
 #commandDiv .cm-s-night.CodeMirror{
   background: #282828;
-  height: 125px;
+  height: 140px;
   top: 487px;
+  border-radius: 0px 0px 20px 20px;
 }
 #historyDiv .cm-s-night.CodeMirror{
-  background: #252525;
-  height: 125px;
+  background: #484848;
+  height: 140px;
   top: 477px;
 }
 .CodeMirror-simplescroll-horizontal div, .CodeMirror-simplescroll-vertical div{

@@ -49,7 +49,7 @@ GridGenerator.prototype.setupGrid = function (game) {
 };
 
 GridGenerator.prototype.calculateGridRadius = function (game, rows, columns) {    
-    const columnWidth = (game.world.width - 200) / columns;
+    const columnWidth = (game.world.width) / columns;
     const rowHeight = (game.world.height - 350) / rows;
     return Math.min(columnWidth, rowHeight);
 };
@@ -59,6 +59,10 @@ GridGenerator.prototype.getGridSpriteForCharacter = (character) => {
         case 'R':
         case 'E':
             return 'circle';
+        case 'a':
+        case 'b':
+        case 'c':
+            return 'nut';
         case '-':
             return 'horLine';
         case '|':
