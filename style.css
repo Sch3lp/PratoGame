@@ -23,7 +23,7 @@ body {
   pointer-events: all;
 }
 #commandDiv .cm-s-night.CodeMirror{
-  background: #282828;
+  background: #1D4189;
   height: 140px;
   top: 487px;
   border-radius: 0px 0px 20px 20px;

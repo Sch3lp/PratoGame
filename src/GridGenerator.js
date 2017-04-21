@@ -60,9 +60,11 @@ GridGenerator.prototype.getGridSpriteForCharacter = (character) => {
         case 'E':
             return 'circle';
         case 'a':
+            return 'robbyleft';
         case 'b':
+            return 'robbyright';
         case 'c':
-            return 'nut';
+            return 'robbyantenna';
         case '-':
             return 'horLine';
         case '|':

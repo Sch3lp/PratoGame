@@ -4,6 +4,8 @@ function Robby() {
   this.game;
   this.sprite;
   this.emitter;
+  this.leftEye;
+  this.rightEye;
 };
 
 function WindingKey() {
@@ -57,6 +59,12 @@ Robby.prototype.init = function (game) {
   game.time.events.add(10 * columns * rows + 500, () => { this.emitter.start(false, 500, 10); }, this);
 
   this.sprite = game.addTweenedSprite('robby', offset, offset, 10 * columns * rows, 0.2);
+  this.leftEye = game.addTweenedSprite('robbyeyeleft', -80, -135, 10 * columns * rows, 1);
+  this.rightEye = game.addTweenedSprite('robbyeyeright', 75, -135, 10 * columns * rows, 1);
+  this.leftEye.anchor.setTo(0.1, 0.5);
+  this.rightEye.anchor.setTo(0.1, 0.5);
+  this.sprite.addChild(this.leftEye);
+  this.sprite.addChild(this.rightEye);
 }
 
 Robby.prototype.goRight = function () {

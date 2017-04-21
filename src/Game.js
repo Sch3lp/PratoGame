@@ -30,6 +30,19 @@ Prato.Game.prototype = {
 		this.typeDelayed(this.startText.join('\n'));
 	},
 	update: function () {
+		const mousePositionX = this.input.mousePointer.x;
+		const mousePositionY = this.input.mousePointer.y;
+
+		const xDiffLeft = mousePositionX - (robby.sprite.x - 15);
+		const xDiffRight = mousePositionX - (robby.sprite.x + 15);
+		const yDiff = mousePositionY - (robby.sprite.y - 27);
+
+		var angleLeft = Math.atan2(yDiff, xDiffLeft);
+		var angleRight = Math.atan2(yDiff, xDiffRight);
+		// this.editor.setValue('' + mousePositionX + ', ' + mousePositionY + '\n' + robby.sprite.x + ', ' + (robby.sprite.y - 27));
+		robby.leftEye.rotation = angleLeft;
+		robby.rightEye.rotation = angleRight;
+
 	},
 	enterKeyDown: function () {
 		var input = this.editor.getValue();
