@@ -9,12 +9,7 @@ var enemy = new Enemy();
 
 Enemy.prototype.init = function (game) {
     this.game = game;
-    const rows = gridGenerator.levelGrid.length;
-    const columns = gridGenerator.levelGrid[0].length;
-    const offset = 50;
-    const xPos = gridGenerator.levelGrid.findIndex(innerArray => innerArray.includes('E'));
-    const yPos = gridGenerator.levelGrid[xPos].findIndex(element => element === 'E');
-    var enemyPixelPosition = gridGenerator.convertGridToPixels(xPos, yPos);
+    const enemyPixelPosition = gridGenerator.getPositionOfElementInPixels('E');
 
     this.emitter = game.add.emitter(enemyPixelPosition.x, enemyPixelPosition.y, 100);
     this.emitter.makeParticles('dustRed');
@@ -22,9 +17,9 @@ Enemy.prototype.init = function (game) {
     this.emitter.setScale(0, 0.25, 0, 0.25, 500, Phaser.Easing.Quintic.Out);
     this.emitter.maxParticleSpeed = new Phaser.Point(50, 50);
     this.emitter.minParticleSpeed = new Phaser.Point(-50, -50);
-    game.time.events.add(10 * columns * rows + 500, () => { this.emitter.start(false, 500, 10); }, this);
+    game.time.events.add(500, () => { this.emitter.start(false, 500, 10); }, this);
 
-    this.sprite = game.addTweenedSprite('badrobot', enemyPixelPosition.x, enemyPixelPosition.y, 10 * columns * rows, 0.5);
+    this.sprite = game.addTweenedSprite('badrobot', enemyPixelPosition.x, enemyPixelPosition.y, 0, 0.5);
 	var anim = this.sprite.animations.add('blink');
 	anim.play(5, true);
 }

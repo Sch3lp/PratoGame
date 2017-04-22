@@ -1,8 +1,12 @@
 Prato.Game = function (game) {
-	this.startText = ['---------------------------------------------------', 'WELCOME TO THE PRATO ROBBY ASSEMBLING TOOL OPERATOR', 'ALSO KNOWN AS P.R.A.T.O.', 'PLEASE REASSEMBLE ROBBY', '---------------------------------------------------'];
+	this.startText =
+'---------------------------------------------------\n\
+WELCOME TO THE PRATO ROBBY ASSEMBLING TOOL OPERATOR\n\
+ALSO KNOWN AS P.R.A.T.O.\n\
+PLEASE REASSEMBLE ROBBY\n\
+---------------------------------------------------';
 	this.editor;
 	this.history;
-	this.stillTyping = true;
 };
 Prato.Game.prototype = {
 	create: function () {		
@@ -10,6 +14,7 @@ Prato.Game.prototype = {
 
 		gridGenerator.setupGrid(this);
 		this.setupCharacters();
+		this.setupParts();
 		this.setupArrows();
 
 		document.getElementById("codeMirrorDiv").style.display = 'block';
@@ -27,7 +32,7 @@ Prato.Game.prototype = {
 		this.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.add(this.enterKeyDown, this);
 		this.shiftKey = this.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
 
-		this.typeDelayed(this.startText.join('\n'));
+		this.history.setValue(this.startText);
 	},
 	update: function () {
 		const mousePositionX = this.input.mousePointer.x;
@@ -47,15 +52,9 @@ Prato.Game.prototype = {
 	enterKeyDown: function () {
 		var input = this.editor.getValue();
 		if (this.shiftKey.isDown) {
-			var newCursorPosition = this.editor.getCursor();
-			this.editor.setValue(input + '\n');
-			newCursorPosition.line++;
-			newCursorPosition.ch = 0;
-			this.editor.setCursor(newCursorPosition);
+			this.makeNewLineAtCursorAndRememberCursorPosition(input);
 			return;
-		}		
-		if (this.stillTyping) return;
-		this.stillTyping = true;
+		}
 		var input = this.editor.getValue();
 		if (input.trim() === '') {
 			this.editor.setValue('');
@@ -65,20 +64,27 @@ Prato.Game.prototype = {
 
 		var result = this.evaluateCall(input);
 
-		this.typeDelayed('\n' + input + '\n' + result);
+		this.setHistory(input, result);
 		this.editor.setValue('');
 		return result;
 	},
 
-	typeDelayed: function (typeLeft) {
-		this.history.setValue(this.history.getValue() + typeLeft[0]);
-		this.history.scrollTo(null, this.history.getScrollInfo().height);
-		if (typeLeft.substring(1).length === 0) {
-			this.stillTyping = false;
-			return;
-		}
-		this.time.events.add(15, this.typeDelayed, this, typeLeft.substring(1));
+	makeNewLineAtCursorAndRememberCursorPosition: function (input) {
+		var newCursorPosition = this.editor.getCursor();
+		const splittedInput = input.split('\n');
+		const splittedLineWhereCursorIs = splittedInput[newCursorPosition.line];
+		splittedInput[newCursorPosition.line] = [splittedLineWhereCursorIs.slice(0, newCursorPosition.ch), "\n", splittedLineWhereCursorIs.slice(newCursorPosition.ch)].join('');
+		this.editor.setValue(splittedInput.join('\n'));
+		newCursorPosition.line++;
+		newCursorPosition.ch = 0;
+		this.editor.setCursor(newCursorPosition);
 	},
+
+	setHistory: function (input, result) {
+		this.history.setValue(this.history.getValue() + '\n> ' + input + '\n  ' + result.replace(/\n/g, "\n  "));
+		this.history.scrollTo(null, this.history.getScrollInfo().height);
+	},
+
 	evaluateCall: function (command) {
 		try {
 			return '' + eval.call(this, command);
@@ -97,6 +103,12 @@ Prato.Game.prototype = {
 
 		robby.init(this);
 		enemy.init(this);
+
+	},
+	setupParts() {
+		leftArm.init(this);
+		rightArm.init(this);
+		antenna.init(this);
 
 	},
 	setupArrows() {

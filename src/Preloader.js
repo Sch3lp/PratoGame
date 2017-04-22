@@ -12,9 +12,9 @@ Prato.Preloader.prototype = {
       this.load.image('dust', 'img/Dust.png');
       this.load.image('dustRed', 'img/DustRed.png');
       this.load.image('bg', 'img/BG.png');
-      this.load.image('robbyleft', 'img/RobbyLeft.png');
-      this.load.image('robbyright', 'img/RobbyRight.png');
-      this.load.image('robbyantenna', 'img/RobbyAntenna.png');
+      this.load.image('l', 'img/RobbyLeft.png');
+      this.load.image('r', 'img/RobbyRight.png');
+      this.load.image('a', 'img/RobbyAntenna.png');
       this.load.image('robbyeyeleft', 'img/RobbyEyeLeft.png');
       this.load.image('robbyeyeright', 'img/RobbyEyeRight.png');
 			this.load.spritesheet('badrobot', 'img/BadRobot.png', 178, 178, 2);

@@ -46,21 +46,19 @@ Robby.prototype.go = function () {
 
 Robby.prototype.init = function (game) {
   this.game = game;
-  const rows = gridGenerator.levelGrid.length;
-  const columns = gridGenerator.levelGrid[0].length;
-  const offset = 50;
+  const position = gridGenerator.getPositionOfElementInPixels('R');
 
-  this.emitter = game.add.emitter(offset, offset, 100);
+  this.emitter = game.add.emitter(position.x, position.y, 100);
   this.emitter.makeParticles('dust');
   this.emitter.setAlpha(1, 0, 500);
   this.emitter.setScale(0, 0.25, 0, 0.25, 500, Phaser.Easing.Quintic.Out);
   this.emitter.maxParticleSpeed = new Phaser.Point(50, 50);
   this.emitter.minParticleSpeed = new Phaser.Point(-50, -50);
-  game.time.events.add(10 * columns * rows + 500, () => { this.emitter.start(false, 500, 10); }, this);
+  game.time.events.add(500, () => { this.emitter.start(false, 500, 10); }, this);
 
-  this.sprite = game.addTweenedSprite('robby', offset, offset, 10 * columns * rows, 0.2);
-  this.leftEye = game.addTweenedSprite('robbyeyeleft', -80, -135, 10 * columns * rows, 1);
-  this.rightEye = game.addTweenedSprite('robbyeyeright', 75, -135, 10 * columns * rows, 1);
+  this.sprite = game.addTweenedSprite('robby', position.x, position.y, 0, 0.2);
+  this.leftEye = game.addTweenedSprite('robbyeyeleft', -80, -135, 0, 1);
+  this.rightEye = game.addTweenedSprite('robbyeyeright', 75, -135, 0, 1);
   this.leftEye.anchor.setTo(0.1, 0.5);
   this.rightEye.anchor.setTo(0.1, 0.5);
   this.sprite.addChild(this.leftEye);
@@ -85,6 +83,17 @@ Robby.prototype.canYouGoThere = function (diffX, diffY) {
 Robby.prototype.doABarrelRoll = function () {
   this.game.add.tween(this.sprite).to( { angle: 359 }, 250, Phaser.Easing.Linear.None, true);
 	this.game.time.events.add(260, () => {this.sprite.angle = 0}, this);
+}
+
+Robby.prototype.attach = function (part) {
+  if(!part.isAttachable) return "Can only attach Attachables";
+  const myPosition = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y);
+  const partPosition = gridGenerator.convertPixelsToGrid(part.sprite.x, part.sprite.y);
+  const distance = Math.abs(myPosition.x - partPosition.x) + Math.abs(myPosition.y - partPosition.y)
+  if(distance > 1) return "Can only attach adjacent Attachables";
+  part.sprite.scale.setTo(1/this.sprite.scale.x, 1/this.sprite.scale.y);
+  this.sprite.addChild(part.sprite);
+  return "Attachment successful";
 }
 
 help = () => 'No cheating!'

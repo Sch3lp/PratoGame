@@ -1,12 +1,12 @@
 function GridGenerator() {
     this.getLevelString = () => {
-        var level = "R-oa  o-o-o\n\
+        var level = "R-ol  o-o-o\n\
   |   | | |\n\
 o-o o-o o-o\n\
 |   |   | |\n\
 o-o-o   E-o\n\
-  |       c\n\
-  o-ob     ";
+  |       a\n\
+  o-or     ";
         return level;
     };
     this.createGrid = () => {
@@ -48,7 +48,7 @@ GridGenerator.prototype.setupGrid = function (game) {
     }
 };
 
-GridGenerator.prototype.calculateGridRadius = function (game, rows, columns) {    
+GridGenerator.prototype.calculateGridRadius = function (game, rows, columns) {
     const columnWidth = (game.world.width) / columns;
     const rowHeight = (game.world.height - 350) / rows;
     return Math.min(columnWidth, rowHeight);
@@ -59,36 +59,39 @@ GridGenerator.prototype.getGridSpriteForCharacter = (character) => {
         case 'R':
         case 'E':
             return 'circle';
-        case 'a':
-            return 'robbyleft';
-        case 'b':
-            return 'robbyright';
-        case 'c':
-            return 'robbyantenna';
         case '-':
             return 'horLine';
         case '|':
             return 'vertLine';
     }
 };
-GridGenerator.prototype.convertGridToPixels = function(gridX, gridY) {
-  const rows = gridGenerator.levelGrid[0].length;
-  const columns = gridGenerator.levelGrid.length;
-  const offset = 50;
+GridGenerator.prototype.convertGridToPixels = function (gridX, gridY) {
+    const rows = gridGenerator.levelGrid[0].length;
+    const columns = gridGenerator.levelGrid.length;
+    const offset = 50;
 
-  return {
-      x: offset + gridX * this.gridRadius,
-      y: offset + gridY * this.gridRadius
-  };
+    return {
+        x: offset + gridX * this.gridRadius,
+        y: offset + gridY * this.gridRadius
+    };
 };
-GridGenerator.prototype.convertPixelsToGrid = function(pixelX, pixelY) {
-  const rows = gridGenerator.levelGrid[0].length;
-  const columns = gridGenerator.levelGrid.length;
-  const offset = 50;
+GridGenerator.prototype.getPositionOfElementInPixels = function (element) {
+    const rows = gridGenerator.levelGrid.length;
+    const columns = gridGenerator.levelGrid[0].length;
+    const xPos = gridGenerator.levelGrid.findIndex(innerArray => innerArray.includes(element));
+    const yPos = gridGenerator.levelGrid[xPos].findIndex(el => el === element);
+    var pixelPosition = gridGenerator.convertGridToPixels(xPos, yPos);
 
-  return {
-      x: Math.round((pixelX - offset) / this.gridRadius),
-      y: Math.round((pixelY - offset) / this.gridRadius)
-  };
+    return pixelPosition;
+};
+GridGenerator.prototype.convertPixelsToGrid = function (pixelX, pixelY) {
+    const rows = gridGenerator.levelGrid[0].length;
+    const columns = gridGenerator.levelGrid.length;
+    const offset = 50;
+
+    return {
+        x: Math.round((pixelX - offset) / this.gridRadius),
+        y: Math.round((pixelY - offset) / this.gridRadius)
+    };
 };
 
