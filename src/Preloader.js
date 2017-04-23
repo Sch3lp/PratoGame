@@ -17,7 +17,9 @@ Prato.Preloader.prototype = {
       this.load.image('a', 'img/RobbyAntenna.png');
       this.load.image('robbyeyeleft', 'img/RobbyEyeLeft.png');
       this.load.image('robbyeyeright', 'img/RobbyEyeRight.png');
+      this.load.image('exit', 'img/Exit.png');
 			this.load.spritesheet('badrobot', 'img/BadRobot.png', 178, 178, 2);
+      this.load.audio('theme', 'audio/Theme.mp3');
 	},
 	create: function(){
 		this.state.start('Game');

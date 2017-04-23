@@ -35,11 +35,11 @@ Enemy.prototype.go = function (x, y) {
   const enemyPosition = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y);
   const destination = gridGenerator.convertGridToPixels(enemyPosition.x + x * 2, enemyPosition.y + y * 2);
 
-  this.game.add.tween(this.sprite).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
+  var moveTween = this.game.add.tween(this.sprite).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
   this.game.add.tween(this.emitter).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
   this.game.add.tween(this.sprite.scale).to({ x: this.sprite.scale.x * 0.8, y: this.sprite.scale.y * 0.8 }, 125, Phaser.Easing.Linear.InOut, true).yoyo(true);
 
-  this.game.time.events.add(250, () => enemy.getRobbyIfYouCan(), this);
+  moveTween.onComplete.add(enemy.getRobbyIfYouCan, this);
 }
 
 Enemy.prototype.notify = function (game) {

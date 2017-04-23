@@ -1,18 +1,18 @@
 function GridGenerator() {
     this.getLevelString = () => {
-        var level = "R-ol  o-o-o\n\
-  |   | | |\n\
-o-o o-o o-o\n\
-|   |   | |\n\
-o-o-o   E-o\n\
-  |       a\n\
-  o-or     ";
+        var level = "R-o   o-o-o-o-e\n\
+  |   | | | |  \n\
+o-o o-o o-o o  \n\
+|   |   | | |  \n\
+o-o-o   E-o o  \n\
+  |     a   |  \n\
+  o-ol     ro  ";
         return level;
     };
     this.createGrid = () => {
         var level = this.getLevelString();
         var oneLineLevel = level.replace(/(\r\n|\n|\r)/gm, "");
-        const offset = 50;
+        const offset = 70;
         const columns = Math.max(...level.split('\n').map((line) => line.length));
         const rows = level.split('\n').length;
 
@@ -38,7 +38,7 @@ GridGenerator.prototype.setupGrid = function (game) {
     const rows = this.levelGrid[0].length;
     const columns = this.levelGrid.length;
     this.gridRadius = this.calculateGridRadius(game, rows, columns)
-    const offset = 50;
+    const offset = 70;
 
     for (var i = 0; i < rows; i++) {
         for (var j = 0; j < columns; j++) {
@@ -50,7 +50,7 @@ GridGenerator.prototype.setupGrid = function (game) {
 
 GridGenerator.prototype.calculateGridRadius = function (game, rows, columns) {
     const columnWidth = (game.world.width) / columns;
-    const rowHeight = (game.world.height - 350) / rows;
+    const rowHeight = (game.world.height - 360) / rows;
     return Math.min(columnWidth, rowHeight);
 };
 GridGenerator.prototype.getGridSpriteForCharacter = (character) => {
@@ -63,12 +63,14 @@ GridGenerator.prototype.getGridSpriteForCharacter = (character) => {
             return 'horLine';
         case '|':
             return 'vertLine';
+        case 'e':
+            return 'exit';
     }
 };
 GridGenerator.prototype.convertGridToPixels = function (gridX, gridY) {
     const rows = gridGenerator.levelGrid[0].length;
     const columns = gridGenerator.levelGrid.length;
-    const offset = 50;
+    const offset = 70;
 
     return {
         x: offset + gridX * this.gridRadius,
@@ -87,7 +89,7 @@ GridGenerator.prototype.getPositionOfElementInPixels = function (element) {
 GridGenerator.prototype.convertPixelsToGrid = function (pixelX, pixelY) {
     const rows = gridGenerator.levelGrid[0].length;
     const columns = gridGenerator.levelGrid.length;
-    const offset = 50;
+    const offset = 70;
 
     return {
         x: Math.round((pixelX - offset) / this.gridRadius),

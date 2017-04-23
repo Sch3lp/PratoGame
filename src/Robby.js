@@ -1,6 +1,9 @@
 function Robby() {
   this.windingKey = new WindingKey();
   this.navigation = new Navigation();
+  this.lPosition = {x: -37, y: 17};
+  this.rPosition = {x: 37, y: 17};
+  this.aPosition = {x: 0, y: -57};
   this.game;
   this.sprite;
   this.emitter;
@@ -40,7 +43,7 @@ Robby.prototype.go = function () {
   this.game.add.tween(this.sprite).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
   this.game.add.tween(this.emitter).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
   this.game.add.tween(this.sprite.scale).to({ x: this.sprite.scale.x * 0.8, y: this.sprite.scale.y * 0.8 }, 125, Phaser.Easing.Linear.InOut, true).yoyo(true);
-  this.game.time.events.add(250, () => enemy.notify(), this);
+  enemy.notify();
   
 }
 
@@ -56,9 +59,9 @@ Robby.prototype.init = function (game) {
   this.emitter.minParticleSpeed = new Phaser.Point(-50, -50);
   game.time.events.add(500, () => { this.emitter.start(false, 500, 10); }, this);
 
-  this.sprite = game.addTweenedSprite('robby', position.x, position.y, 0, 0.2);
-  this.leftEye = game.addTweenedSprite('robbyeyeleft', -80, -135, 0, 1);
-  this.rightEye = game.addTweenedSprite('robbyeyeright', 75, -135, 0, 1);
+  this.sprite = game.addTweenedSprite('robby', position.x, position.y, 0, 1);
+  this.leftEye = game.addTweenedSprite('robbyeyeleft', -16, -27, 0, 1);
+  this.rightEye = game.addTweenedSprite('robbyeyeright', 15, -27, 0, 1);
   this.leftEye.anchor.setTo(0.1, 0.5);
   this.rightEye.anchor.setTo(0.1, 0.5);
   this.sprite.addChild(this.leftEye);
@@ -81,8 +84,8 @@ Robby.prototype.canYouGoThere = function (diffX, diffY) {
 }
 
 Robby.prototype.doABarrelRoll = function () {
-  this.game.add.tween(this.sprite).to( { angle: 359 }, 250, Phaser.Easing.Linear.None, true);
-	this.game.time.events.add(260, () => {this.sprite.angle = 0}, this);
+  var barrelRoll = this.game.add.tween(this.sprite).to( { angle: 359 }, 250, Phaser.Easing.Linear.None, true);
+  barrelRoll.onComplete.add(() => {this.sprite.angle = 0}, this);
 }
 
 Robby.prototype.attach = function (part) {
@@ -91,8 +94,10 @@ Robby.prototype.attach = function (part) {
   const partPosition = gridGenerator.convertPixelsToGrid(part.sprite.x, part.sprite.y);
   const distance = Math.abs(myPosition.x - partPosition.x) + Math.abs(myPosition.y - partPosition.y)
   if(distance > 1) return "Can only attach adjacent Attachables";
-  part.sprite.scale.setTo(1/this.sprite.scale.x, 1/this.sprite.scale.y);
+  part.sprite.x -= robby.sprite.x;
+  part.sprite.y -= robby.sprite.y;
   this.sprite.addChild(part.sprite);
+  this.game.add.tween(part.sprite).to({ x: this[part.element + "Position"].x, y: this[part.element + "Position"].y }, 250, Phaser.Easing.Linear.In, true);
   return "Attachment successful";
 }
 
