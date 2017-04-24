@@ -22,7 +22,7 @@ Prato.Game.prototype = {
 
 		document.getElementById("codeMirrorDiv").style.display = 'block';
 		var inputField = document.getElementById("commandInput");
-		this.editor = CodeMirror.fromTextArea(inputField, { mode: "javascript", theme: 'night', scrollbarStyle: 'simple', extraKeys:{Enter: this.enterKeyDown}});
+		this.editor = CodeMirror.fromTextArea(inputField, { mode: "javascript", theme: 'night', scrollbarStyle: 'simple', extraKeys:{Enter: this.enterKeyDown.bind(this)}});
 		var historyField = document.getElementById("historyTextArea");
 		this.history = CodeMirror.fromTextArea(historyField, {
 			mode: "javascript",
@@ -32,7 +32,6 @@ Prato.Game.prototype = {
 			lineWrapping: true
 		});
 
-		this.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.add(this.enterKeyDown, this);
 		this.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(this.downKeyDown, this);
 		this.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(this.upKeyDown, this);
 		this.shiftKey = this.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
@@ -54,12 +53,13 @@ Prato.Game.prototype = {
 
 	},
 	downKeyDown: function () {
-		if (this.previousEntryIndex === -1) return;
+		const lastLine = this.editor.getValue().split('\n').length - 1;
+		if (this.previousEntryIndex === -1 || this.editor.getCursor().line !== lastLine) return;
 		this.editor.setValue(this.previousEntries[this.previousEntryIndex]);
 		this.previousEntryIndex = Math.min(this.previousEntries.length - 1, this.previousEntryIndex + 1);
 	},
 	upKeyDown: function () {
-		if (this.previousEntryIndex === -1) return;
+		if (this.previousEntryIndex === -1 || this.editor.getCursor().line !== 0) return;
 		this.editor.setValue(this.previousEntries[this.previousEntryIndex]);
 		this.previousEntryIndex = Math.max(0, this.previousEntryIndex - 1);
 	},
@@ -98,6 +98,11 @@ Prato.Game.prototype = {
 	setHistory: function (input, result) {
 		this.history.setValue(this.history.getValue() + '\n> ' + input + '\n  ' + result.replace(/\n/g, "\n  "));
 		this.history.scrollTo(null, this.history.getScrollInfo().height);
+	},
+
+	goToPostState: function () {
+		this.state.start('Post');
+		document.getElementById("codeMirrorDiv").style.display = 'none';
 	},
 
 	evaluateCall: function (command) {

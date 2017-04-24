@@ -17,6 +17,19 @@ body {
   left: calc(50% - 512px);
   pointer-events: none;
 }
+#postFormDiv {
+  display:none;
+  width: 1024px;
+  height: 768px;
+  position: absolute;
+  top: calc(50% - 384px);  
+  left: calc(50% - 512px);
+}
+form {
+  position: absolute;
+  top: 50px;
+  left: 50px;
+}
 .cm-s-night.CodeMirror{
   font-family:"Courier";
   font-size: 20px;

@@ -40,11 +40,11 @@ Robby.prototype.go = function () {
   const robbyPosition = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y);
   const destination = gridGenerator.convertGridToPixels(robbyPosition.x + this.navigation.x * 2, robbyPosition.y + this.navigation.y * 2);
 
-  this.game.add.tween(this.sprite).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
+  var moveTween = this.game.add.tween(this.sprite).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
   this.game.add.tween(this.emitter).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
   this.game.add.tween(this.sprite.scale).to({ x: this.sprite.scale.x * 0.8, y: this.sprite.scale.y * 0.8 }, 125, Phaser.Easing.Linear.InOut, true).yoyo(true);
   enemy.notify();
-  
+  moveTween.onComplete.add(this.checkIfYoureThere, this);
 }
 
 Robby.prototype.init = function (game) {
@@ -99,6 +99,17 @@ Robby.prototype.attach = function (part) {
   this.sprite.addChild(part.sprite);
   this.game.add.tween(part.sprite).to({ x: this[part.element + "Position"].x, y: this[part.element + "Position"].y }, 250, Phaser.Easing.Linear.In, true);
   return "Attachment successful";
+}
+
+Robby.prototype.checkIfYoureThere = function () {  
+  const exitPosition = gridGenerator.getPositionOfElementInGrid('e');
+  const myPosition = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y);
+  if(exitPosition.x !== myPosition.x || exitPosition.y !== myPosition.y) return;
+  const childrenSpriteKeys = this.sprite.children.map(ch => ch.key);
+  if(!childrenSpriteKeys.includes('l')) return;
+  if(!childrenSpriteKeys.includes('r')) return;
+  if(!childrenSpriteKeys.includes('a')) return;
+  this.game.goToPostState();
 }
 
 help = () => 'No cheating!'
