@@ -81,7 +81,6 @@ Prato.Game.prototype = {
 
 		this.setHistory(input, result);
 		this.editor.setValue('');
-		return CodeMirror.Pass;
 	},
 
 	makeNewLineAtCursorAndRememberCursorPosition: function (input) {
