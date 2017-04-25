@@ -1,61 +1,67 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
 
 <head>
-  <meta charset="UTF-8" />
-  <title>Prato Game!</title>
-  <link rel="stylesheet" href="addon/scroll/simplescrollbars.css">
-  <link rel="stylesheet" href="theme/night.css">
-  <link rel="stylesheet" href="lib/codemirror.css">
-  <link rel="stylesheet" type="text/css" href="style.css" />
-  <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
-  <script src="lib/codemirror.js"></script>
-  <script src="addon/scroll/simplescrollbars.js"></script>
-  <script src="mode/javascript/javascript.js"></script>
-  <script src="src/Boot.js"></script>
-  <script src="src/Preloader.js"></script>
-  <script src="src/Game.js"></script>
-  <script src="src/Post.js"></script>
-  <script src="src/Robby.js"></script>
-  <script src="src/Enemy.js"></script>
-  <script src="src/GridGenerator.js"></script>
-  <script src="src/Attachable.js"></script>
+    <meta charset="UTF-8" />
+    <title>Prato Game!</title>
+    <link rel="stylesheet" href="addon/scroll/simplescrollbars.css">
+    <link rel="stylesheet" href="theme/night.css">
+    <link rel="stylesheet" href="lib/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
+    <script src="lib/codemirror.js"></script>
+    <script src="addon/scroll/simplescrollbars.js"></script>
+    <script src="mode/javascript/javascript.js"></script>
+    <script src="src/Boot.js"></script>
+    <script src="src/Preloader.js"></script>
+    <script src="src/Pre.js"></script>
+    <script src="src/Game.js"></script>
+    <script src="src/Post.js"></script>
+    <script src="src/Robby.js"></script>
+    <script src="src/Enemy.js"></script>
+    <script src="src/GridGenerator.js"></script>
+    <script src="src/Attachable.js"></script>
 </head>
 
 <body>
-  <div id="phaserContainer">
-    <script type="text/javascript">
-      (function () {
-        var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'phaserContainer', null, true);
+    <div id="phaserContainer">
+        <script type="text/javascript">
+            (function () {
+                const game = new Phaser.Game(1024, 768, Phaser.AUTO, 'phaserContainer', null, true);
 
-        game.state.add('Boot', Prato.Boot);
-        game.state.add('Preloader', Prato.Preloader);
-        game.state.add('Game', Prato.Game);
-        game.state.add('Post', Prato.Post);
+                game.state.add('Boot', Prato.Boot);
+                game.state.add('Preloader', Prato.Preloader);
+                game.state.add('Pre', Prato.Pre);
+                game.state.add('Game', Prato.Game);
+                game.state.add('Post', Prato.Post);
 
-        game.state.start('Boot');
-      })();
-    </script>
-  </div>
-  <div id="codeMirrorDiv">
-    <div id="historyDiv">
-      <textarea id="historyTextArea"></textarea>
+                game.state.start('Boot');
+            })();
+        </script>
     </div>
-    <div id="commandDiv">
-      <textarea id="commandInput" autofocus></textarea>
+    <div id="codeMirrorDiv">
+        <div id="historyDiv">
+            <textarea id="historyTextArea"></textarea>
+        </div>
+        <div id="commandDiv">
+            <textarea id="commandInput" autofocus></textarea>
+        </div>
     </div>
-  </div>
-  <div id="postFormDiv">
-    <form>
-      First name:<br>
-      <input type="text" name="firstname" value="Mickey"><br>
-      Last name:<br>
-      <input type="text" name="lastname" value="Mouse"><br>
-      Email-address: <br>
-      <input type="text" name="emailaddress" value="disney@disney.haha"><br><br>
-      <input type="submit" value="Submit">
-    </form>
-  </div>
+    <div id="postFormDiv">
+        <form>
+            <h1>Thank you for playing!</h1>
+            <h2>Tell us a little about you...</h2>
+            First name:<br>
+            <input type="text" name="firstname" value="Mickey"><br><br>
+            Last name:<br>
+            <input type="text" name="lastname" value="Mouse"><br><br>
+            Email-address*: <br>
+            <input type="text" name="emailaddress" value="disney@disney.haha" required><br><br>
+            Comments: <br>
+            <textarea name="freeComment" cols="40" rows="5"></textarea><br><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
 </body>
 
 </html>

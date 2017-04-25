@@ -5,7 +5,7 @@ function Enemy() {
     this.goingDown;
 };
 
-var enemy = new Enemy();
+const enemy = new Enemy();
 
 Enemy.prototype.init = function (game) {
     this.game = game;
@@ -20,7 +20,7 @@ Enemy.prototype.init = function (game) {
     game.time.events.add(500, () => { this.emitter.start(false, 500, 10); }, this);
 
     this.sprite = game.addTweenedSprite('badrobot', enemyPixelPosition.x, enemyPixelPosition.y, 0, 0.5);
-	var anim = this.sprite.animations.add('blink');
+	const anim = this.sprite.animations.add('blink');
 	anim.play(5, true);
 }
 
@@ -35,7 +35,7 @@ Enemy.prototype.go = function (x, y) {
   const enemyPosition = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y);
   const destination = gridGenerator.convertGridToPixels(enemyPosition.x + x * 2, enemyPosition.y + y * 2);
 
-  var moveTween = this.game.add.tween(this.sprite).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
+  const moveTween = this.game.add.tween(this.sprite).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
   this.game.add.tween(this.emitter).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true);
   this.game.add.tween(this.sprite.scale).to({ x: this.sprite.scale.x * 0.8, y: this.sprite.scale.y * 0.8 }, 125, Phaser.Easing.Linear.InOut, true).yoyo(true);
 

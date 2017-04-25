@@ -1,25 +1,25 @@
 function GridGenerator() {
     this.getLevelString = () => {
-        var level = "R-o   o-o-o-o-e\n\
+        var level = 'R-o   o-o-o-o-e\n\
   |   | | | |  \n\
 o-o o-o o-o o  \n\
 |   |   | | |  \n\
 o-o-o   E-o o  \n\
   |     a   |  \n\
-  o-ol     ro  ";
+  o-ol     ro  ';
         return level;
     };
     this.createGrid = () => {
         var level = this.getLevelString();
-        var oneLineLevel = level.replace(/(\r\n|\n|\r)/gm, "");
+        var oneLineLevel = level.replace(/(\r\n|\n|\r)/gm, '');
         const offset = 70;
         const columns = Math.max(...level.split('\n').map((line) => line.length));
         const rows = level.split('\n').length;
 
         var grid = [];
 
-        for (var i = 0; i < rows; i++) {
-            for (var j = 0; j < columns; j++) {
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < columns; j++) {
                 if (!grid[j]) grid[j] = [];
                 grid[j][i] = oneLineLevel[i * columns + j];
             }
@@ -40,9 +40,9 @@ GridGenerator.prototype.setupGrid = function (game) {
     this.gridRadius = this.calculateGridRadius(game, rows, columns)
     const offset = 70;
 
-    for (var i = 0; i < rows; i++) {
-        for (var j = 0; j < columns; j++) {
-            var spriteName = this.getGridSpriteForCharacter(this.levelGrid[j][i]);
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < columns; j++) {
+            const spriteName = this.getGridSpriteForCharacter(this.levelGrid[j][i]);
             game.addTweenedSprite(spriteName, offset + j * this.gridRadius, offset + i * this.gridRadius, 10 * i * columns + j, 1);
         }
     }
@@ -88,8 +88,8 @@ GridGenerator.prototype.convertPixelsToGrid = function (pixelX, pixelY) {
     };
 };
 GridGenerator.prototype.getPositionOfElementInPixels = function (element) {
-    var gridPosition = this.getPositionOfElementInGrid(element);
-    var pixelPosition = gridGenerator.convertGridToPixels(gridPosition.x, gridPosition.y);
+    const gridPosition = this.getPositionOfElementInGrid(element);
+    const pixelPosition = gridGenerator.convertGridToPixels(gridPosition.x, gridPosition.y);
 
     return pixelPosition;
 };

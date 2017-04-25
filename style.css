@@ -1,51 +1,61 @@
 body {
-  background: #383838;
+    background: #383838;
 }
+
 #phaserContainer {
-  width: 1024px;
-  height: 768px;
-  position: absolute;
-  top: calc(50% - 384px);  
-  left: calc(50% - 512px);  
+    width: 1024px;
+    height: 768px;
+    position: absolute;
+    top: calc(50% - 384px);
+    left: calc(50% - 512px);
 }
+
 #codeMirrorDiv {
-  display:none;
-  width: 1024px;
-  height: 768px;
-  position: absolute;
-  top: calc(50% - 384px);  
-  left: calc(50% - 512px);
-  pointer-events: none;
+    display: none;
+    width: 1024px;
+    height: 768px;
+    position: absolute;
+    top: calc(50% - 384px);
+    left: calc(50% - 512px);
+    pointer-events: none;
 }
+
 #postFormDiv {
-  display:none;
-  width: 1024px;
-  height: 768px;
-  position: absolute;
-  top: calc(50% - 384px);  
-  left: calc(50% - 512px);
+    display: none;
+    width: 1024px;
+    height: 768px;
+    position: absolute;
+    top: calc(50% - 384px);
+    left: calc(50% - 512px);
+    background: #282828;
+    border-radius: 20px;
 }
+
 form {
-  position: absolute;
-  top: 50px;
-  left: 50px;
+    margin-top: 25px;
+    margin-left: 25px;
+    color: white;
 }
-.cm-s-night.CodeMirror{
-  font-family:"Courier";
-  font-size: 20px;
-  pointer-events: all;
+
+.cm-s-night.CodeMirror {
+    font-family: "Courier";
+    font-size: 20px;
+    pointer-events: all;
 }
-#commandDiv .cm-s-night.CodeMirror{
-  background: #282828;
-  height: 140px;
-  top: 487px;
-  border-radius: 0px 0px 20px 20px;
+
+#commandDiv .cm-s-night.CodeMirror {
+    background: #282828;
+    height: 140px;
+    top: 487px;
+    border-radius: 0px 0px 20px 20px;
 }
-#historyDiv .cm-s-night.CodeMirror{
-  background: #484848;
-  height: 140px;
-  top: 477px;
+
+#historyDiv .cm-s-night.CodeMirror {
+    background: #484848;
+    height: 140px;
+    top: 477px;
 }
-.CodeMirror-simplescroll-horizontal div, .CodeMirror-simplescroll-vertical div{
-  background: #282828;
+
+.CodeMirror-simplescroll-horizontal div, .CodeMirror-simplescroll-vertical div {
+    background: #282828;
 }
