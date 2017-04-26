@@ -1,9 +1,9 @@
-var Prato = {};
-Prato.Boot = function(game){};
-Prato.Boot.prototype = {
-	preload: function(){
-	},
-	create: function(){
-		this.state.start('Preloader');
-	}
-};
+var Prato = {}
+
+class Boot {
+    create() {
+        this.state.start('Preloader')
+    }
+}
+
+Prato.Boot = new Boot()

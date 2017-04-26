@@ -1,14 +1,10 @@
-Prato.Post = function (game) {
+class Post {
+    create() {
+        document.getElementById('postFormDiv').style.display = 'block'
 
-};
-Prato.Post.prototype = {
-    create: function () {
-        document.getElementById('postFormDiv').style.display = 'block';
-
-        this.input.keyboard.removeKey(Phaser.Keyboard.DOWN);
-        this.input.keyboard.removeKey(Phaser.Keyboard.UP);
-    },
-    update: function () {
-
+        this.input.keyboard.removeKey(Phaser.Keyboard.DOWN)
+        this.input.keyboard.removeKey(Phaser.Keyboard.UP)
     }
-};
+}
+
+Prato.Post = new Post()
