@@ -87,6 +87,7 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
 
         this.setHistory(input, result)
         this.editor.setValue('')
+        this.postInput(input)
     }
     makeNewLineAtCursorAndRememberCursorPosition(input) {
         const newCursorPosition = this.editor.getCursor()
@@ -156,6 +157,14 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         sprite.scale.setTo(0, 0)
         this.add.tween(sprite.scale).to({ x: endScale, y: endScale }, 500, Phaser.Easing.Linear.In, true, delay)
         return sprite
+    }
+    postInput(input) {
+        $.ajax({
+            url: window.location.href + 'input',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ 'input': input + '\n' })
+        })
     }
 }
 
