@@ -1,8 +1,9 @@
 var express = require('express')
+var app = express()
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
-var app = express()
 var path = require('path');
+var sqlite3 = require('sqlite3').verbose();
 
 app.use(cookieParser())
 app.use(bodyParser.json())
@@ -10,7 +11,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }))
 
-var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('pratogame.db');
 
 app.use(express.static('public'))
@@ -18,22 +18,26 @@ app.use(express.static('public'))
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
     const now = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+    const cookie = getCookieNumber(req, res)
     db.run('INSERT INTO Player (Cookie) VALUES (?)', getCookieNumber(req, res), () => {
-        db.run('INSERT INTO Session (StartDate, PlayerId) VALUES (?,?)', [now, this.lastID])
+        db.run('INSERT INTO Session (StartDate, PlayerId) VALUES (?,(SELECT [id] FROM Player WHERE Cookie = ?))', [now, cookie])
     })
 });
 
 app.post('/input', function (req, res) {
     const now = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
     db.run('UPDATE Session \
-    SET LastInput = ?, InputData = IFNULL(InputData, \'\') || ? \
-    WHERE Cookie = ? AND id = (SELECT MAX([id]) FROM Session)', [now, req.body.input, req.cookies.pratoGameCookie])
+    SET LastInput = ?, InputData = (IFNULL(InputData, \'\') || ?) \
+    WHERE PlayerId = (SELECT Id FROM Player WHERE Cookie = ?) AND Session.id = (SELECT MAX(Id) FROM Session)', [now, req.body.input, req.cookies.pratoGameCookie])
 })
 
 app.post('/playerinfo', function (req, res) {
     db.run('UPDATE Session \
-    SET Email = ? \
-    WHERE Cookie = ? AND id = (SELECT MAX([id]) FROM Session)', [req.body.playerinfo, req.cookies.pratoGameCookie])
+    SET FreeComment = ? \
+    WHERE PlayerId = (SELECT Id FROM Player WHERE Cookie = ?) AND Session.id = (SELECT MAX(Id) FROM Session)', [req.body.freeComment, req.cookies.pratoGameCookie])
+    db.run('UPDATE Player \
+    SET Email = ?, FirstName = ?, LastName = ? \
+    WHERE Cookie = ?', [req.body.emailAddress, req.body.firstName, req.body.lastName, req.cookies.pratoGameCookie])
 })
 
 app.listen(8080)
