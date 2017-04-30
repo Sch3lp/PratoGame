@@ -17,18 +17,16 @@ app.use(express.static('public'))
 
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
-    const now = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
     const cookie = getCookieNumber(req, res)
     db.run('INSERT INTO Player (Cookie) VALUES (?)', getCookieNumber(req, res), () => {
-        db.run('INSERT INTO Session (StartDate, PlayerId) VALUES (?,(SELECT [id] FROM Player WHERE Cookie = ?))', [now, cookie])
+        db.run('INSERT INTO Session (StartDate, PlayerId) VALUES (?,(SELECT [id] FROM Player WHERE Cookie = ?))', [this.getLocalNow(), cookie])
     })
 });
 
 app.post('/input', function (req, res) {
-    const now = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
     db.run('UPDATE Session \
     SET LastInput = ?, InputData = (IFNULL(InputData, \'\') || ?) \
-    WHERE PlayerId = (SELECT Id FROM Player WHERE Cookie = ?) AND Session.id = (SELECT MAX(Id) FROM Session)', [now, req.body.input, req.cookies.pratoGameCookie])
+    WHERE PlayerId = (SELECT Id FROM Player WHERE Cookie = ?) AND Session.id = (SELECT MAX(Id) FROM Session)', [this.getLocalNow(), req.body.input, req.cookies.pratoGameCookie])
 })
 
 app.post('/playerinfo', function (req, res) {
@@ -55,4 +53,11 @@ getCookieNumber = (request, response) => {
         console.log('cookie exists', cookie);
     }
     return cookie ? cookie : randomNumber;
+}
+
+getLocalNow = () => {
+    const nowUTC = new Date()
+    nowUTC.setMinutes(nowUTC.getMinutes() - nowUTC.getTimezoneOffset());
+    const now = nowUTC.toISOString().replace(/T/, ' ').replace(/\..+/, '')
+    return now
 }

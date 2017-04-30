@@ -1,11 +1,11 @@
 class GridGenerator {
     constructor() {
-        this.levelGrid = this.createGrid()
+        this.levelGrid
         this.gridRadius
         this.game
     }
     createGrid() {
-        const level = this.getLevelString()
+        const level = this.game.isNotFirstRun ? this.getBonusLevelString() : this.getLevelString()
         const oneLineLevel = level.replace(/(\r\n|\n|\r)/gm, '')
         const columns = Math.max(...level.split('\n').map((line) => line.length))
         const rows = level.split('\n').length
@@ -22,6 +22,7 @@ class GridGenerator {
     }
     setupGrid(game) {
         this.game = game
+        this.levelGrid = this.createGrid()
         const rows = this.levelGrid[0].length
         const columns = this.levelGrid.length
         this.gridRadius = this.calculateGridRadius(game, rows, columns)
@@ -89,6 +90,16 @@ o-o-o   E-o o  \n\
   |     a   |  \n\
   o-ol     ro  '
         return level
+    }
+    getBonusLevelString() {
+        const bonusLevel = 'o-o   o-o-o-o-e\n\
+  |   | | | |  \n\
+o-o o-o o-o o  \n\
+|   |   | | |  \n\
+o-o-o   R-E o  \n\
+  |     a   |  \n\
+  o-ol     ro  '
+        return bonusLevel
     }
 }
 

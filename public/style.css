@@ -1,5 +1,5 @@
 body {
-    background: #383838;
+    background: #cbd7dd;
 }
 
 #phaserContainer {
@@ -51,7 +51,7 @@ form {
 }
 
 #historyDiv .cm-s-night.CodeMirror {
-    background: #484848;
+    background: #062A5A;
     height: 140px;
     top: 477px;
 }

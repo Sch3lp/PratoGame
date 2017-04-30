@@ -9,10 +9,16 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         this.history
         this.previousEntries = []
         this.previousEntryIndex = -1
+        this.isNotFirstRun
+    }
+    init(isNotFirstRun) {
+        this.isNotFirstRun = isNotFirstRun
     }
     create() {
-        const music = this.add.audio('theme')
-        music.play()
+        if (!this.isNotFirstRun) {
+            const music = this.add.audio('theme')
+            music.play()
+        }
         this.add.sprite(0, 0, 'bg')
 
         gridGenerator.setupGrid(this)
@@ -104,8 +110,14 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         this.history.scrollTo(null, this.history.getScrollInfo().height)
     }
     goToPostState() {
-        this.state.start('Post')
+        this.editor.getWrapperElement().parentNode.removeChild(this.editor.getWrapperElement());
+        this.history.getWrapperElement().parentNode.removeChild(this.history.getWrapperElement());
         document.getElementById('codeMirrorDiv').style.display = 'none'
+        if (this.isNotFirstRun){
+            this.state.start('Game', true, false, true)
+            return;
+        }
+        this.state.start('Post')
     }
     evaluateCall(command) {
         try {

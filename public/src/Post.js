@@ -2,6 +2,8 @@ class Post {
     create() {
         $("#postForm").submit((e) => {
             $.post(window.location.href + 'playerinfo', $('#postForm').serialize())
+        document.getElementById('postFormDiv').style.display = 'none'
+            this.state.start('Game', true, false, true)
             e.preventDefault()
         })
         
