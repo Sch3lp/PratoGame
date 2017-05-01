@@ -46,7 +46,7 @@ getCookieNumber = (request, response) => {
     if (cookie === undefined) {
         randomNumber = Math.random().toString();
         randomNumber = randomNumber.substring(2, randomNumber.length);
-        response.cookie('pratoGameCookie', randomNumber, { maxAge: 365 * 24 * 60 * 60 * 1000, httpOnly: true });
+        response.cookie('pratoGameCookie', randomNumber, { maxAge: 365 * 24 * 60 * 60 * 1000 });
         console.log('cookie created successfully');
     }
     else {

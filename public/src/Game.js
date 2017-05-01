@@ -10,6 +10,10 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         this.previousEntries = []
         this.previousEntryIndex = -1
         this.isNotFirstRun
+        this.gridGroup
+        this.exitGroup
+        this.robbyGroup
+        this.badrobotGroup
     }
     init(isNotFirstRun) {
         this.isNotFirstRun = isNotFirstRun
@@ -20,6 +24,8 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
             music.play()
         }
         this.add.sprite(0, 0, 'bg')
+        this.gridGroup = this.add.group();
+        this.exitGroup = this.add.group();
 
         gridGenerator.setupGrid(this)
         this.setupCharacters()
@@ -164,11 +170,30 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         this.editor.focus()
     }
     addTweenedSprite(spriteName, positionX, positionY, delay, endScale) {
-        const sprite = this.add.sprite(positionX, positionY, spriteName)
+        const sprite = this.getGroupBySpriteName(spriteName).create(positionX, positionY, spriteName)
         sprite.anchor.setTo(0.5, 0.5)
         sprite.scale.setTo(0, 0)
         this.add.tween(sprite.scale).to({ x: endScale, y: endScale }, 500, Phaser.Easing.Linear.In, true, delay)
         return sprite
+    }
+    getGroupBySpriteName(spriteName) {
+        switch (spriteName) {
+            case 'vertLine':
+            case 'horLine':
+            case 'circle':
+                return this.gridGroup
+            case 'exit':
+                return this.exitGroup
+            case 'badrobot':
+                return this.badrobotGroup
+            case 'robby':
+            case 'l':
+            case 'r':
+            case 'a':
+            case 'robbyeyeleft':
+            case 'robbyeyeright':
+                return this.robbyGroup
+        }
     }
     postInput(input) {
         $.ajax({

@@ -3,7 +3,8 @@ class Enemy {
         this.game
         this.sprite
         this.emitter
-        this.goingDown
+        this.goingBack
+        this.horizontal
     }
     activate() {
         this.isActive = true
@@ -11,6 +12,7 @@ class Enemy {
     }
     init(game) {
         this.game = game
+        this.horizontal = this.shouldIMoveHorizontal()
         const enemyPixelPosition = gridGenerator.getPositionOfElementInPixels('E')
 
         this.emitter = game.add.emitter(enemyPixelPosition.x, enemyPixelPosition.y, 100)
@@ -21,6 +23,7 @@ class Enemy {
         this.emitter.minParticleSpeed = new Phaser.Point(-50, -50)
         game.time.events.add(500, () => { this.emitter.start(false, 500, 10) }, this)
 
+        this.game.badrobotGroup = this.game.add.group();
         this.sprite = game.addTweenedSprite('badrobot', enemyPixelPosition.x, enemyPixelPosition.y, 0, 0.5)
         const anim = this.sprite.animations.add('blink')
         anim.play(5, true)
@@ -38,15 +41,40 @@ class Enemy {
     canYouGoThere(diffX, diffY) {
         const position = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y)
         return gridGenerator.levelGrid[position.x + diffX]
-          && gridGenerator.levelGrid[position.x + diffX][position.y + diffY]
-          && ['-', '|'].includes(gridGenerator.levelGrid[position.x + diffX][position.y + diffY])
+            && gridGenerator.levelGrid[position.x + diffX][position.y + diffY]
+            && ['-', '|'].includes(gridGenerator.levelGrid[position.x + diffX][position.y + diffY])
     }
     notify() {
-        if (this.goingDown) {
+        if (this.horizontal) {
+            this.goHorizontal()
+        } else {
+            this.goVertical()
+        }
+    }
+    goHorizontal() {
+        if (this.goingBack) {
+            if (this.canYouGoThere(-1, 0)) {
+                this.go(-1, 0)
+            } else {
+                this.goingBack = false
+                this.go(1, 0)
+            }
+
+        } else {
+            if (this.canYouGoThere(1, 0)) {
+                this.go(1, 0)
+            } else {
+                this.goingBack = true
+                this.go(-1, 0)
+            }
+        }
+    }
+    goVertical() {
+        if (this.goingBack) {
             if (this.canYouGoThere(0, -1)) {
                 this.go(0, -1)
             } else {
-                this.goingDown = false
+                this.goingBack = false
                 this.go(0, 1)
             }
 
@@ -54,7 +82,7 @@ class Enemy {
             if (this.canYouGoThere(0, 1)) {
                 this.go(0, 1)
             } else {
-                this.goingDown = true
+                this.goingBack = true
                 this.go(0, -1)
             }
         }
@@ -70,6 +98,15 @@ class Enemy {
             robby.emitter.x = spawnPosition.x
             robby.emitter.y = spawnPosition.y
         }
+    }
+
+    shouldIMoveHorizontal() {
+        const gridPosition = gridGenerator.getPositionOfElementInGrid('E')
+        var verticalNeighbours = []
+        if (gridPosition.y > 0) verticalNeighbours.push(gridGenerator.levelGrid[gridPosition.x][gridPosition.y - 1])
+        if (gridPosition.y + 1 < gridGenerator.levelGrid[0].length) verticalNeighbours.push(gridGenerator.levelGrid[gridPosition.x][gridPosition.y + 1])
+
+        return !verticalNeighbours.includes("|")
     }
 }
 

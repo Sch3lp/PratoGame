@@ -5,7 +5,7 @@ class GridGenerator {
         this.game
     }
     createGrid() {
-        const level = this.game.isNotFirstRun ? this.getBonusLevelString() : this.getLevelString()
+        const level = !this.game.isNotFirstRun ? this.getLevelString() : new RandomGridGenerator().generate()
         const oneLineLevel = level.replace(/(\r\n|\n|\r)/gm, '')
         const columns = Math.max(...level.split('\n').map((line) => line.length))
         const rows = level.split('\n').length
@@ -30,13 +30,14 @@ class GridGenerator {
 
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < columns; j++) {
+                if([' ', 'r', 'l', 'a'].includes(this.levelGrid[j][i])) continue
                 const spriteName = this.getGridSpriteForCharacter(this.levelGrid[j][i])
                 game.addTweenedSprite(spriteName, offset + j * this.gridRadius, offset + i * this.gridRadius, 10 * i * columns + j, 1)
             }
         }
     }
     calculateGridRadius(game, rows, columns) {
-        const columnWidth = (game.world.width) / columns
+        const columnWidth = (game.world.width - 200) / columns
         const rowHeight = (game.world.height - 360) / rows
         return Math.min(columnWidth, rowHeight)
     }
@@ -90,16 +91,6 @@ o-o-o   E-o o  \n\
   |     a   |  \n\
   o-ol     ro  '
         return level
-    }
-    getBonusLevelString() {
-        const bonusLevel = 'o-o   o-o-o-o-e\n\
-  |   | | | |  \n\
-o-o o-o o-o o  \n\
-|   |   | | |  \n\
-o-o-o   R-E o  \n\
-  |     a   |  \n\
-  o-ol     ro  '
-        return bonusLevel
     }
 }
 

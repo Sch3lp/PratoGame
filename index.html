@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="theme/night.css">
     <link rel="stylesheet" href="lib/codemirror.css">
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css"/>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
     <script src="lib/codemirror.js"></script>
@@ -22,6 +24,8 @@
     <script src="src/Enemy.js"></script>
     <script src="src/GridGenerator.js"></script>
     <script src="src/Attachable.js"></script>
+    <script src="src/LevelBlocks.js"></script>
+    <script src="src/RandomGridGenerator.js"></script>
 </head>
 
 <body>
@@ -53,16 +57,29 @@
             <h1>Thank you for playing!</h1>
             <h2>Tell us a little about you...</h2>
             First name:<br>
-            <input type="text" name="firstName" value="Mickey"><br><br>
-            Last name:<br>
-            <input type="text" name="lastName" value="Mouse"><br><br>
-            Email-address*: <br>
-            <input type="text" name="emailAddress" value="disney@disney.haha" required><br><br>
-            Comments: <br>
+            <input type="text" name="firstName" value="Mickey"><br><br> Last name:<br>
+            <input type="text" name="lastName" value="Mouse"><br><br> Email-address*: <br>
+            <input type="text" name="emailAddress" value="disney@disney.haha" required><br><br> Comments: <br>
             <textarea name="freeComment" cols="40" rows="5"></textarea><br><br>
             <input type="submit" value="Submit">
         </form>
     </div>
+    <script>
+        window.addEventListener("load", function () {
+            window.cookieconsent.initialise({
+                "palette": {
+                    "popup": {
+                        "background": "#252e39"
+                    },
+                    "button": {
+                        "background": "#14a7d0"
+                    }
+                },
+                "theme": "edgeless",
+                "position": "bottom-left"
+            })
+        });
+    </script>
 </body>
 
 </html>
