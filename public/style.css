@@ -31,6 +31,14 @@ body {
     border-radius: 20px;
 }
 
+#titleImage {
+    width: 1024px;
+    height: 794px;
+    position: absolute;
+    top: calc(50% - 410px);
+    left: calc(50% - 512px);
+}
+
 form {
     margin-top: 25px;
     margin-left: 25px;
@@ -44,7 +52,7 @@ form {
 }
 
 #commandDiv .cm-s-night.CodeMirror {
-    background: #282828;
+    background: #0c4f91;
     height: 140px;
     top: 487px;
     border-radius: 0px 0px 20px 20px;

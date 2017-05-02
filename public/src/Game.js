@@ -19,10 +19,6 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         this.isNotFirstRun = isNotFirstRun
     }
     create() {
-        if (!this.isNotFirstRun) {
-            const music = this.add.audio('theme')
-            music.play()
-        }
         this.add.sprite(0, 0, 'bg')
         this.gridGroup = this.add.group();
         this.exitGroup = this.add.group();
@@ -119,7 +115,7 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         this.editor.getWrapperElement().parentNode.removeChild(this.editor.getWrapperElement());
         this.history.getWrapperElement().parentNode.removeChild(this.history.getWrapperElement());
         document.getElementById('codeMirrorDiv').style.display = 'none'
-        if (this.isNotFirstRun){
+        if (this.isNotFirstRun) {
             this.state.start('Game', true, false, true)
             return;
         }
@@ -144,10 +140,21 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         antenna.init(this)
     }
     setupArrows() {
-        this.add.button(910, 325, 'upArrow', this.pressUpArrow, this)
-        this.add.button(945, 360, 'rightArrow', this.pressRightArrow, this)
-        this.add.button(910, 395, 'downArrow', this.pressDownArrow, this)
-        this.add.button(875, 360, 'leftArrow', this.pressLeftArrow, this)
+        var arrowBG = this.add.sprite(930, 360, 'arrowBG')
+        arrowBG.scale.setTo(0.25, 0.25)
+        arrowBG.anchor.setTo(0.5, 0.5)
+        var up = this.add.button(930, 325, 'upArrow', this.pressUpArrow, this)
+        var right = this.add.button(965, 360, 'rightArrow', this.pressRightArrow, this)
+        var down = this.add.button(930, 395, 'downArrow', this.pressDownArrow, this)
+        var left = this.add.button(895, 360, 'leftArrow', this.pressLeftArrow, this)
+        up.anchor.setTo(0.5, 0.5)
+        right.anchor.setTo(0.5, 0.5)
+        down.anchor.setTo(0.5, 0.5)
+        left.anchor.setTo(0.5, 0.5)
+        up.scale.setTo(0.25, 0.25)
+        right.scale.setTo(0.25, 0.25)
+        down.scale.setTo(0.25, 0.25)
+        left.scale.setTo(0.25, 0.25)
     }
     pressRightArrow() {
         this.editor.setValue('robby.goRight()')

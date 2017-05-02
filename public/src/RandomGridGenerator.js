@@ -99,7 +99,7 @@ class RandomGridGenerator {
     }
     getRandomStringIndexInGrid(grid, string) {
         var indices = [];
-        for (var i = 0; i < grid.length - 2; i++) {
+        for (var i = 2; i < grid.length - 2; i++) {
             if (grid.substring(i, i + 2) === string) indices.push(i);
         }
         return indices[Math.floor(Math.random() * indices.length)]

@@ -2,9 +2,9 @@ class Robby {
     constructor() {
         this.windingKey = new WindingKey()
         this.navigation = new Navigation()
-        this.lPosition = { x: -37, y: 17 }
-        this.rPosition = { x: 37, y: 17 }
-        this.aPosition = { x: 0, y: -57 }
+        this.lPosition = { x: -140, y: 58 }
+        this.rPosition = { x: 140, y: 58 }
+        this.aPosition = { x: 0, y: -195 }
         this.game
         this.sprite
         this.emitter
@@ -25,9 +25,9 @@ class Robby {
         game.time.events.add(500, () => { this.emitter.start(false, 500, 10) }, this)
         
         this.game.robbyGroup = this.game.add.group();
-        this.sprite = game.addTweenedSprite('robby', position.x, position.y, 0, 1)
-        this.leftEye = game.addTweenedSprite('robbyeyeleft', -16, -27, 0, 1)
-        this.rightEye = game.addTweenedSprite('robbyeyeright', 15, -27, 0, 1)
+        this.sprite = game.addTweenedSprite('robby', position.x, position.y, 0, 0.3)
+        this.leftEye = game.addTweenedSprite('robbyeyeleft', -57, -95, 0, 1)
+        this.rightEye = game.addTweenedSprite('robbyeyeright', 52, -95, 0, 1)
         this.leftEye.anchor.setTo(0.1, 0.5)
         this.rightEye.anchor.setTo(0.1, 0.5)
         this.sprite.addChild(this.leftEye)
@@ -71,6 +71,7 @@ class Robby {
         const partPosition = gridGenerator.convertPixelsToGrid(part.sprite.x, part.sprite.y)
         const distance = Math.abs(myPosition.x - partPosition.x) + Math.abs(myPosition.y - partPosition.y)
         if (distance > 1) return 'Can only attach adjacent Attachables'
+        part.sprite.scale.setTo(1, 1)
         part.sprite.x -= robby.sprite.x
         part.sprite.y -= robby.sprite.y
         this.sprite.addChild(part.sprite)

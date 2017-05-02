@@ -24,9 +24,7 @@ class Enemy {
         game.time.events.add(500, () => { this.emitter.start(false, 500, 10) }, this)
 
         this.game.badrobotGroup = this.game.add.group();
-        this.sprite = game.addTweenedSprite('badrobot', enemyPixelPosition.x, enemyPixelPosition.y, 0, 0.5)
-        const anim = this.sprite.animations.add('blink')
-        anim.play(5, true)
+        this.sprite = game.addTweenedSprite('badrobot', enemyPixelPosition.x, enemyPixelPosition.y, 0, 0.25)
     }
     go(x, y) {
         const enemyPosition = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y)

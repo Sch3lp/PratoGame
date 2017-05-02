@@ -1,12 +1,10 @@
 ﻿class Pre {
     create() {
-        this.add.sprite(0, 0, 'bgPre')
-
-        this.add.sprite(0, 0, 'logo')
-        this.add.text(320, 355, 'Press any key to continue...')
-
+        const music = this.add.audio('theme')
+        music.play()
         this.input.keyboard.onDownCallback = () => {
             this.input.keyboard.onDownCallback = null
+            $("#titleImage").hide()
             this.state.start('Game')
         }
     }

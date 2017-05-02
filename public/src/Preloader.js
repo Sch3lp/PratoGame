@@ -9,6 +9,7 @@ class Preloader {
         this.load.image('rightArrow', 'img/Right.png')
         this.load.image('downArrow', 'img/Down.png')
         this.load.image('leftArrow', 'img/Left.png')
+        this.load.image('arrowBG', 'img/ArrowBG.png')
         this.load.image('dust', 'img/Dust.png')
         this.load.image('dustRed', 'img/DustRed.png')
         this.load.image('bg', 'img/BG.png')
@@ -19,7 +20,7 @@ class Preloader {
         this.load.image('robbyeyeleft', 'img/RobbyEyeLeft.png')
         this.load.image('robbyeyeright', 'img/RobbyEyeRight.png')
         this.load.image('exit', 'img/Exit.png')
-        this.load.spritesheet('badrobot', 'img/BadRobot.png', 178, 178, 2)
+        this.load.image('badrobot', 'img/BadRobot.png')
         this.load.audio('theme', 'audio/Theme.mp3')
     }
     create() {
