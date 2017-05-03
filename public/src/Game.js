@@ -195,8 +195,8 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         rotatedSprite.angle = signed ? 0 : 180
         rotatedSprite.alpha = signed ? 1 : 0
         const randomDelay = Math.floor((Math.random() * 500) + 1)
-        this.add.tween(sprite).to({ x: positionX, y: positionY }, 750, Phaser.Easing.Linear.In, true, randomDelay);
-        this.add.tween(rotatedSprite).to({ x: positionX, y: positionY }, 750, Phaser.Easing.Linear.In, true, randomDelay);
+        this.add.tween(sprite).to({ x: positionX, y: positionY }, 750 - randomDelay, Phaser.Easing.Linear.In, true, randomDelay);
+        this.add.tween(rotatedSprite).to({ x: positionX, y: positionY }, 750 - randomDelay, Phaser.Easing.Linear.In, true, randomDelay);
         this.add.tween(sprite).to({ alpha: signed ? 1 : 0 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, Number.MAX_VALUE, true);
         this.add.tween(rotatedSprite).to({  alpha: signed ? 0 : 1 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, Number.MAX_VALUE, true);
     }
