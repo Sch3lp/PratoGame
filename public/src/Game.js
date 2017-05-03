@@ -183,6 +183,23 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         this.add.tween(sprite.scale).to({ x: endScale, y: endScale }, 500, Phaser.Easing.Linear.In, true, delay)
         return sprite
     }
+    addTweenedGridLine(spriteName, positionX, positionY) {
+        const horizontal = Math.random() >= 0.5;
+        const signed = Math.random() >= 0.5;
+        const sprite = this.getGroupBySpriteName(spriteName).create(positionX + (horizontal ? signed ? -1024 : 1024 : 0), positionY + (!horizontal ? signed ? -768 : 768 : 0), spriteName)
+        const rotatedSprite = this.getGroupBySpriteName(spriteName).create(sprite.x, sprite.y, spriteName)
+        sprite.anchor.setTo(0.5, 0.5)
+        rotatedSprite.anchor.setTo(0.5, 0.5)
+        sprite.angle = signed ? 180 : 0
+        sprite.alpha = signed ? 0 : 1
+        rotatedSprite.angle = signed ? 0 : 180
+        rotatedSprite.alpha = signed ? 1 : 0
+        const randomDelay = Math.floor((Math.random() * 500) + 1)
+        this.add.tween(sprite).to({ x: positionX, y: positionY }, 750, Phaser.Easing.Linear.In, true, randomDelay);
+        this.add.tween(rotatedSprite).to({ x: positionX, y: positionY }, 750, Phaser.Easing.Linear.In, true, randomDelay);
+        this.add.tween(sprite).to({ alpha: signed ? 1 : 0 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, Number.MAX_VALUE, true);
+        this.add.tween(rotatedSprite).to({  alpha: signed ? 0 : 1 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, Number.MAX_VALUE, true);
+    }
     getGroupBySpriteName(spriteName) {
         switch (spriteName) {
             case 'vertLine':

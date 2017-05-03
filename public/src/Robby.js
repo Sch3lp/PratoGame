@@ -22,12 +22,12 @@ class Robby {
         this.emitter.setScale(0, 0.25, 0, 0.25, 500, Phaser.Easing.Quintic.Out)
         this.emitter.maxParticleSpeed = new Phaser.Point(50, 50)
         this.emitter.minParticleSpeed = new Phaser.Point(-50, -50)
-        game.time.events.add(500, () => { this.emitter.start(false, 500, 10) }, this)
+        game.time.events.add(1000, () => { this.emitter.start(false, 500, 10) }, this)
         
         this.game.robbyGroup = this.game.add.group();
-        this.sprite = game.addTweenedSprite('robby', position.x, position.y, 0, 0.3)
-        this.leftEye = game.addTweenedSprite('robbyeyeleft', -57, -95, 0, 1)
-        this.rightEye = game.addTweenedSprite('robbyeyeright', 52, -95, 0, 1)
+        this.sprite = game.addTweenedSprite('robby', position.x, position.y, 1000, 0.3)
+        this.leftEye = game.addTweenedSprite('robbyeyeleft', -57, -95, 1000, 1)
+        this.rightEye = game.addTweenedSprite('robbyeyeright', 52, -95, 1000, 1)
         this.leftEye.anchor.setTo(0.1, 0.5)
         this.rightEye.anchor.setTo(0.1, 0.5)
         this.sprite.addChild(this.leftEye)

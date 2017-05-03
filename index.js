@@ -38,7 +38,7 @@ app.post('/playerinfo', function (req, res) {
     WHERE Cookie = ?', [req.body.emailAddress, req.body.firstName, req.body.lastName, req.cookies.pratoGameCookie])
 })
 
-app.listen(8080)
+app.listen(8888)
 
 getCookieNumber = (request, response) => {
     var cookie = request.cookies.pratoGameCookie;

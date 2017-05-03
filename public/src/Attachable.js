@@ -16,7 +16,7 @@ class Attachable {
     }
     init(game) {
         const position = gridGenerator.getPositionOfElementInPixels(this.element)
-        this.sprite = game.addTweenedSprite(this.element, position.x, position.y, 0, 0.3)
+        this.sprite = game.addTweenedSprite(this.element, position.x, position.y, 1000, 0.3)
     }
 }
 const leftArm = new Attachable('l')

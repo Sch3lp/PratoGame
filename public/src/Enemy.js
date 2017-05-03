@@ -15,23 +15,23 @@ class Enemy {
         this.horizontal = this.shouldIMoveHorizontal()
         const enemyPixelPosition = gridGenerator.getPositionOfElementInPixels('E')
 
-        this.emitter = game.add.emitter(enemyPixelPosition.x, enemyPixelPosition.y, 100)
+        this.emitter = game.add.emitter(enemyPixelPosition.x, enemyPixelPosition.y + 25, 100)
         this.emitter.makeParticles('dustRed')
         this.emitter.setAlpha(1, 0, 500)
-        this.emitter.setScale(0, 0.25, 0, 0.25, 500, Phaser.Easing.Quintic.Out)
+        this.emitter.setScale(0, 0.2, 0, 0.2, 500, Phaser.Easing.Quintic.Out)
         this.emitter.maxParticleSpeed = new Phaser.Point(50, 50)
         this.emitter.minParticleSpeed = new Phaser.Point(-50, -50)
-        game.time.events.add(500, () => { this.emitter.start(false, 500, 10) }, this)
+        game.time.events.add(1000, () => { this.emitter.start(false, 1000, 10) }, this)
 
         this.game.badrobotGroup = this.game.add.group();
-        this.sprite = game.addTweenedSprite('badrobot', enemyPixelPosition.x, enemyPixelPosition.y, 0, 0.25)
+        this.sprite = game.addTweenedSprite('badrobot', enemyPixelPosition.x, enemyPixelPosition.y, 1000, 0.25)
     }
     go(x, y) {
         const enemyPosition = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y)
         const destination = gridGenerator.convertGridToPixels(enemyPosition.x + x * 2, enemyPosition.y + y * 2)
 
         const moveTween = this.game.add.tween(this.sprite).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true)
-        this.game.add.tween(this.emitter).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true)
+        this.game.add.tween(this.emitter).to({ x: destination.x, y: destination.y + 25 }, 250, Phaser.Easing.Linear.In, true)
         this.game.add.tween(this.sprite.scale).to({ x: this.sprite.scale.x * 0.8, y: this.sprite.scale.y * 0.8 }, 125, Phaser.Easing.Linear.InOut, true).yoyo(true)
 
         moveTween.onComplete.add(enemy.getRobbyIfYouCan, this)

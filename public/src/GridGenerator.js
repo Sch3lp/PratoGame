@@ -30,9 +30,13 @@ class GridGenerator {
 
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < columns; j++) {
-                if([' ', 'r', 'l', 'a'].includes(this.levelGrid[j][i])) continue
+                if ([' ', 'r', 'l', 'a'].includes(this.levelGrid[j][i])) continue
                 const spriteName = this.getGridSpriteForCharacter(this.levelGrid[j][i])
-                game.addTweenedSprite(spriteName, offset + j * this.gridRadius, offset + i * this.gridRadius, 10 * i * columns + j, 1)
+                if (['horLine', 'vertLine'].includes(spriteName)){
+                    game.addTweenedGridLine(spriteName, offset + j * this.gridRadius, offset + i * this.gridRadius)
+                } else {
+                    game.addTweenedSprite(spriteName, offset + j * this.gridRadius, offset + i * this.gridRadius, 1000, 1)
+                }
             }
         }
     }
