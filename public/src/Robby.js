@@ -2,12 +2,13 @@ class Robby {
     constructor() {
         this.windingKey = new WindingKey()
         this.navigation = new Navigation()
-        this.lPosition = { x: -140, y: 58 }
-        this.rPosition = { x: 140, y: 58 }
+        this.lPosition = { x: 140, y: 58 }
+        this.rPosition = { x: -140, y: 58 }
         this.aPosition = { x: 0, y: -195 }
         this.game
         this.sprite
-        this.emitter
+        this.emitter0
+        this.emitter1
         this.leftEye
         this.rightEye
     }
@@ -15,14 +16,21 @@ class Robby {
         this.game = game
         const position = gridGenerator.getPositionOfElementInPixels('R')
 
-        this.emitter = game.add.emitter(position.x, position.y, 100)
-        this.emitter.parent = this.game.gridGroup
-        this.emitter.makeParticles('dust')
-        this.emitter.setAlpha(1, 0, 500)
-        this.emitter.setScale(0, 0.25, 0, 0.25, 500, Phaser.Easing.Quintic.Out)
-        this.emitter.maxParticleSpeed = new Phaser.Point(50, 50)
-        this.emitter.minParticleSpeed = new Phaser.Point(-50, -50)
-        game.time.events.add(1000, () => { this.emitter.start(false, 500, 10) }, this)
+        this.emitter0 = game.add.emitter(position.x, position.y, 100)
+        this.emitter0.makeParticles('0')
+        this.emitter0.setAlpha(.5, 0, 2500)
+        this.emitter0.setScale(0, 0.2, 0, 0.2, 500, Phaser.Easing.Quintic.Out)
+        this.emitter0.maxParticleSpeed = new Phaser.Point(50, 50)
+        this.emitter0.minParticleSpeed = new Phaser.Point(-50, -50)
+        game.time.events.add(1000, () => { this.emitter0.start(false, 1000, 25) }, this)
+
+        this.emitter1 = game.add.emitter(position.x, position.y, 100)
+        this.emitter1.makeParticles('1')
+        this.emitter1.setAlpha(.5, 0, 2500)
+        this.emitter1.setScale(0, 0.2, 0, 0.2, 500, Phaser.Easing.Quintic.Out)
+        this.emitter1.maxParticleSpeed = new Phaser.Point(50, 50)
+        this.emitter1.minParticleSpeed = new Phaser.Point(-50, -50)
+        game.time.events.add(1000, () => { this.emitter1.start(false, 1000, 25) }, this)
         
         this.game.robbyGroup = this.game.add.group();
         this.sprite = game.addTweenedSprite('robby', position.x, position.y, 1000, 0.3)
@@ -43,7 +51,8 @@ class Robby {
         const destination = gridGenerator.convertGridToPixels(robbyPosition.x + this.navigation.x * 2, robbyPosition.y + this.navigation.y * 2)
 
         const moveTween = this.game.add.tween(this.sprite).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true)
-        this.game.add.tween(this.emitter).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true)
+        this.game.add.tween(this.emitter0).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true)
+        this.game.add.tween(this.emitter1).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true)
         this.game.add.tween(this.sprite.scale).to({ x: this.sprite.scale.x * 0.8, y: this.sprite.scale.y * 0.8 }, 125, Phaser.Easing.Linear.InOut, true).yoyo(true)
         enemy.notify()
         moveTween.onComplete.add(this.checkIfYoureThere, this)
@@ -83,6 +92,7 @@ class Robby {
         const myPosition = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y)
         if (exitPosition.x !== myPosition.x || exitPosition.y !== myPosition.y) return;
         if (this.checkIfComplete()) this.game.goToPostState()
+        this.game.setHistory('ERROR! Robby cannot leave the facility without attaching all remaining parts!')
     }
     checkIfComplete() {
         const childrenSpriteKeys = this.sprite.children.map(ch => ch.key)

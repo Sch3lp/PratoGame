@@ -36,8 +36,11 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
             scrollbarStyle: 'simple',
             extraKeys: {
                 Enter: this.enterKeyDown.bind(this)
-            }
+            },
+            styleActiveLine: true,
+            matchBrackets: true
         })
+        this.editor.on("change", this.checkForAttachDirective.bind(this))
         const historyField = document.getElementById('historyTextArea')
         this.history = CodeMirror.fromTextArea(historyField, {
             mode: 'javascript',
@@ -54,6 +57,9 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         this.history.setValue(this.startText)
     }
     update() {
+        this.rollEyes()
+    }
+    rollEyes() {
         const mousePositionX = this.input.mousePointer.x
         const mousePositionY = this.input.mousePointer.y
 
@@ -97,6 +103,21 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         this.editor.setValue('')
         this.postInput(input)
     }
+    checkForAttachDirective(cm, change) {
+        const editorValue = this.editor.getValue()
+        if (editorValue.includes("robby.attach") && !editorValue.includes("leftArm")
+            && !editorValue.includes("rightArm")
+            && !editorValue.includes("antenna")) {
+
+            this.add.tween(leftArm.text).to({ alpha: 1}, 250, Phaser.Easing.Linear.In, true)
+            this.add.tween(rightArm.text).to({ alpha: 1}, 250, Phaser.Easing.Linear.In, true)
+            this.add.tween(antenna.text).to({ alpha: 1}, 250, Phaser.Easing.Linear.In, true)
+        } else {
+            this.add.tween(leftArm.text).to({ alpha: 0}, 250, Phaser.Easing.Linear.In, true)
+            this.add.tween(rightArm.text).to({ alpha: 0}, 250, Phaser.Easing.Linear.In, true)
+            this.add.tween(antenna.text).to({ alpha: 0}, 250, Phaser.Easing.Linear.In, true)
+        }
+    }
     makeNewLineAtCursorAndRememberCursorPosition(input) {
         const newCursorPosition = this.editor.getCursor()
         const splittedInput = input.split('\n')
@@ -108,7 +129,8 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         this.editor.setCursor(newCursorPosition)
     }
     setHistory(input, result) {
-        this.history.setValue(this.history.getValue() + '\n> ' + input + '\n  ' + result.replace(/\n/g, '\n  '))
+        const newHistory = result ? input + '\n  ' + result.replace(/\n/g, '\n  ') : input
+        this.history.setValue(this.history.getValue() + '\n> ' + newHistory)
         this.history.scrollTo(null, this.history.getScrollInfo().height)
     }
     goToPostState() {
@@ -198,7 +220,7 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         this.add.tween(sprite).to({ x: positionX, y: positionY }, 750 - randomDelay, Phaser.Easing.Linear.In, true, randomDelay);
         this.add.tween(rotatedSprite).to({ x: positionX, y: positionY }, 750 - randomDelay, Phaser.Easing.Linear.In, true, randomDelay);
         this.add.tween(sprite).to({ alpha: signed ? 1 : 0 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, Number.MAX_VALUE, true);
-        this.add.tween(rotatedSprite).to({  alpha: signed ? 0 : 1 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, Number.MAX_VALUE, true);
+        this.add.tween(rotatedSprite).to({ alpha: signed ? 0 : 1 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, Number.MAX_VALUE, true);
     }
     getGroupBySpriteName(spriteName) {
         switch (spriteName) {

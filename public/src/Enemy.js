@@ -2,7 +2,7 @@ class Enemy {
     constructor() {
         this.game
         this.sprite
-        this.emitter
+        this.emitter0
         this.goingBack
         this.horizontal
     }
@@ -15,23 +15,33 @@ class Enemy {
         this.horizontal = this.shouldIMoveHorizontal()
         const enemyPixelPosition = gridGenerator.getPositionOfElementInPixels('E')
 
-        this.emitter = game.add.emitter(enemyPixelPosition.x, enemyPixelPosition.y + 25, 100)
-        this.emitter.makeParticles('dustRed')
-        this.emitter.setAlpha(1, 0, 500)
-        this.emitter.setScale(0, 0.2, 0, 0.2, 500, Phaser.Easing.Quintic.Out)
-        this.emitter.maxParticleSpeed = new Phaser.Point(50, 50)
-        this.emitter.minParticleSpeed = new Phaser.Point(-50, -50)
-        game.time.events.add(1000, () => { this.emitter.start(false, 1000, 10) }, this)
+        this.emitter0 = game.add.emitter(enemyPixelPosition.x, enemyPixelPosition.y, 100)
+        this.emitter0.makeParticles('0')
+        this.emitter0.setAlpha(.5, 0, 2500)
+        this.emitter0.setScale(0, 0.2, 0, 0.2, 500, Phaser.Easing.Quintic.Out)
+        this.emitter0.maxParticleSpeed = new Phaser.Point(50, 50)
+        this.emitter0.minParticleSpeed = new Phaser.Point(-50, -50)
+        game.time.events.add(1000, () => { this.emitter0.start(false, 1000, 25) }, this)
+
+        this.emitter1 = game.add.emitter(enemyPixelPosition.x, enemyPixelPosition.y, 100)
+        this.emitter1.makeParticles('1')
+        this.emitter1.setAlpha(.5, 0, 2500)
+        this.emitter1.setScale(0, 0.2, 0, 0.2, 500, Phaser.Easing.Quintic.Out)
+        this.emitter1.maxParticleSpeed = new Phaser.Point(50, 50)
+        this.emitter1.minParticleSpeed = new Phaser.Point(-50, -50)
+        game.time.events.add(1000, () => { this.emitter1.start(false, 1000, 25) }, this)
 
         this.game.badrobotGroup = this.game.add.group();
         this.sprite = game.addTweenedSprite('badrobot', enemyPixelPosition.x, enemyPixelPosition.y, 1000, 0.25)
+        this.sprite.anchor.setTo(0.5, 0.8)
     }
     go(x, y) {
         const enemyPosition = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y)
         const destination = gridGenerator.convertGridToPixels(enemyPosition.x + x * 2, enemyPosition.y + y * 2)
 
         const moveTween = this.game.add.tween(this.sprite).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true)
-        this.game.add.tween(this.emitter).to({ x: destination.x, y: destination.y + 25 }, 250, Phaser.Easing.Linear.In, true)
+        this.game.add.tween(this.emitter0).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true)
+        this.game.add.tween(this.emitter1).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true)
         this.game.add.tween(this.sprite.scale).to({ x: this.sprite.scale.x * 0.8, y: this.sprite.scale.y * 0.8 }, 125, Phaser.Easing.Linear.InOut, true).yoyo(true)
 
         moveTween.onComplete.add(enemy.getRobbyIfYouCan, this)
@@ -93,8 +103,10 @@ class Enemy {
             const spawnPosition = gridGenerator.convertGridToPixels(0, 0)
             robby.sprite.x = spawnPosition.x
             robby.sprite.y = spawnPosition.y
-            robby.emitter.x = spawnPosition.x
-            robby.emitter.y = spawnPosition.y
+            robby.emitter0.x = spawnPosition.x
+            robby.emitter0.y = spawnPosition.y
+            robby.emitter1.x = spawnPosition.x
+            robby.emitter1.y = spawnPosition.y
         }
     }
 

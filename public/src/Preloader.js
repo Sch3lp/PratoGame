@@ -22,6 +22,8 @@ class Preloader {
         this.load.image('exit', 'img/Exit.png')
         this.load.image('badrobot', 'img/BadRobot.png')
         this.load.audio('theme', 'audio/Theme.mp3')
+        this.load.image('0', 'img/0.png')
+        this.load.image('1', 'img/1.png')
     }
     create() {
         this.state.start('Pre')

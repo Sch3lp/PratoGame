@@ -26,7 +26,7 @@ class GridGenerator {
         const rows = this.levelGrid[0].length
         const columns = this.levelGrid.length
         this.gridRadius = this.calculateGridRadius(game, rows, columns)
-        const offset = 70
+        const offset = 90
 
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < columns; j++) {
@@ -42,7 +42,7 @@ class GridGenerator {
     }
     calculateGridRadius(game, rows, columns) {
         const columnWidth = (game.world.width - 200) / columns
-        const rowHeight = (game.world.height - 360) / rows
+        const rowHeight = (game.world.height - 425) / rows
         return Math.min(columnWidth, rowHeight)
     }
     getGridSpriteForCharacter(character) {
@@ -60,7 +60,7 @@ class GridGenerator {
         }
     }
     convertGridToPixels(gridX, gridY) {
-        const offset = 70
+        const offset = 90
 
         return {
             x: offset + gridX * this.gridRadius,
@@ -68,7 +68,7 @@ class GridGenerator {
         }
     }
     convertPixelsToGrid(pixelX, pixelY) {
-        const offset = 70
+        const offset = 90
 
         return {
             x: Math.round((pixelX - offset) / this.gridRadius),
@@ -93,7 +93,7 @@ o-o o-o o-o o  \n\
 |   |   | | |  \n\
 o-o-o   E-o o  \n\
   |     a   |  \n\
-  o-ol     ro  '
+  o-or     lo  '
         return level
     }
 }
