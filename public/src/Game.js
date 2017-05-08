@@ -202,7 +202,7 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         const sprite = this.getGroupBySpriteName(spriteName).create(positionX, positionY, spriteName)
         sprite.anchor.setTo(0.5, 0.5)
         sprite.scale.setTo(0, 0)
-        this.add.tween(sprite.scale).to({ x: endScale, y: endScale }, 500, Phaser.Easing.Linear.In, true, delay)
+        this.add.tween(sprite.scale).to({ x: endScale, y: endScale }, 250, Phaser.Easing.Linear.In, true, delay)
         return sprite
     }
     addTweenedGridLine(spriteName, positionX, positionY) {

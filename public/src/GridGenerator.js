@@ -35,7 +35,7 @@ class GridGenerator {
                 if (['horLine', 'vertLine'].includes(spriteName)){
                     game.addTweenedGridLine(spriteName, offset + j * this.gridRadius, offset + i * this.gridRadius)
                 } else {
-                    game.addTweenedSprite(spriteName, offset + j * this.gridRadius, offset + i * this.gridRadius, 1000, 1)
+                    game.addTweenedSprite(spriteName, offset + j * this.gridRadius, offset + i * this.gridRadius, 750, 1)
                 }
             }
         }
