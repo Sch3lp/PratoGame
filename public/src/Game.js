@@ -35,7 +35,9 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
             theme: 'night',
             scrollbarStyle: 'simple',
             extraKeys: {
-                Enter: this.enterKeyDown.bind(this)
+                Enter: this.enterKeyDown.bind(this),
+                Up: this.handleArrowUp.bind(this),
+                Down: this.handleArrowDown.bind(this)
             },
             styleActiveLine: true,
             matchBrackets: true
@@ -50,8 +52,6 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
             lineWrapping: true
         })
 
-        this.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(this.downKeyDown, this)
-        this.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(this.upKeyDown, this)
         this.shiftKey = this.input.keyboard.addKey(Phaser.Keyboard.SHIFT)
 
         this.history.setValue(this.startText)
@@ -71,17 +71,6 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         const angleRight = Math.atan2(yDiff, xDiffRight)
         robby.leftEye.rotation = angleLeft
         robby.rightEye.rotation = angleRight
-    }
-    downKeyDown() {
-        const lastLine = this.editor.getValue().split('\n').length - 1
-        if (this.previousEntryIndex === -1 || this.editor.getCursor().line !== lastLine) return
-        this.editor.setValue(this.previousEntries[this.previousEntryIndex])
-        this.previousEntryIndex = Math.min(this.previousEntries.length - 1, this.previousEntryIndex + 1)
-    }
-    upKeyDown() {
-        if (this.previousEntryIndex === -1 || this.editor.getCursor().line !== 0) return
-        this.editor.setValue(this.previousEntries[this.previousEntryIndex])
-        this.previousEntryIndex = Math.max(0, this.previousEntryIndex - 1)
     }
     enterKeyDown() {
         var input = this.editor.getValue()
@@ -109,14 +98,25 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
             && !editorValue.includes("rightArm")
             && !editorValue.includes("antenna")) {
 
-            this.add.tween(leftArm.text).to({ alpha: 1}, 250, Phaser.Easing.Linear.In, true)
-            this.add.tween(rightArm.text).to({ alpha: 1}, 250, Phaser.Easing.Linear.In, true)
-            this.add.tween(antenna.text).to({ alpha: 1}, 250, Phaser.Easing.Linear.In, true)
+            this.add.tween(leftArm.text).to({ alpha: 1 }, 250, Phaser.Easing.Linear.In, true)
+            this.add.tween(rightArm.text).to({ alpha: 1 }, 250, Phaser.Easing.Linear.In, true)
+            this.add.tween(antenna.text).to({ alpha: 1 }, 250, Phaser.Easing.Linear.In, true)
         } else {
-            this.add.tween(leftArm.text).to({ alpha: 0}, 250, Phaser.Easing.Linear.In, true)
-            this.add.tween(rightArm.text).to({ alpha: 0}, 250, Phaser.Easing.Linear.In, true)
-            this.add.tween(antenna.text).to({ alpha: 0}, 250, Phaser.Easing.Linear.In, true)
+            this.add.tween(leftArm.text).to({ alpha: 0 }, 250, Phaser.Easing.Linear.In, true)
+            this.add.tween(rightArm.text).to({ alpha: 0 }, 250, Phaser.Easing.Linear.In, true)
+            this.add.tween(antenna.text).to({ alpha: 0 }, 250, Phaser.Easing.Linear.In, true)
         }
+    }
+    handleArrowUp(instance, name, event) {
+        if (this.previousEntryIndex === -1 || this.editor.getCursor().line !== 0) return CodeMirror.Pass
+        this.editor.setValue(this.previousEntries[this.previousEntryIndex])
+        this.previousEntryIndex = Math.max(0, this.previousEntryIndex - 1)
+    }
+    handleArrowDown(instance, name, event) {
+        const lastLine = this.editor.getValue().split('\n').length - 1
+        if (this.previousEntryIndex === -1 || this.editor.getCursor().line !== lastLine) return CodeMirror.Pass
+        this.editor.setValue(this.previousEntries[this.previousEntryIndex])
+        this.previousEntryIndex = Math.min(this.previousEntries.length - 1, this.previousEntryIndex + 1)
     }
     makeNewLineAtCursorAndRememberCursorPosition(input) {
         const newCursorPosition = this.editor.getCursor()
