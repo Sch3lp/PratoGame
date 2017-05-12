@@ -16,10 +16,20 @@ var db = new sqlite3.Database('pratogame.db');
 app.use(express.static('public'))
 
 app.get('/', function (req, res) {
+    var me = this;
     res.sendFile(path.join(__dirname + '/index.html'));
     const cookie = getCookieNumber(req, res)
-    db.run('INSERT INTO Player (Cookie) VALUES (?)', getCookieNumber(req, res), () => {
-        db.run('INSERT INTO Session (StartDate, PlayerId) VALUES (?,(SELECT [id] FROM Player WHERE Cookie = ?))', [this.getLocalNow(), cookie])
+    var playerId;
+    db.all('SELECT [id] FROM Player WHERE Cookie = ?', cookie, function (err, rows) {
+        if(rows[0]) playerId = rows[0].Id
+        if (!playerId) {
+            db.run('INSERT INTO Player (Cookie) VALUES (?)', cookie, function (err, row) {
+                playerId = this.lastID
+                db.run('INSERT INTO Session (StartDate, PlayerId) VALUES (?, ?)', [me.getLocalNow(), playerId])
+            })
+        } else {
+            db.run('INSERT INTO Session (StartDate, PlayerId) VALUES (?, ?)', [me.getLocalNow(), playerId])
+        }
     })
 });
 
@@ -27,6 +37,7 @@ app.post('/input', function (req, res) {
     db.run('UPDATE Session \
     SET LastInput = ?, InputData = (IFNULL(InputData, \'\') || ?) \
     WHERE PlayerId = (SELECT Id FROM Player WHERE Cookie = ?) AND Session.id = (SELECT MAX(Id) FROM Session)', [this.getLocalNow(), req.body.input, req.cookies.pratoGameCookie])
+    res.end()
 })
 
 app.post('/playerinfo', function (req, res) {
@@ -36,6 +47,7 @@ app.post('/playerinfo', function (req, res) {
     db.run('UPDATE Player \
     SET Email = ?, FirstName = ?, LastName = ? \
     WHERE Cookie = ?', [req.body.emailAddress, req.body.firstName, req.body.lastName, req.cookies.pratoGameCookie])
+    res.end()
 })
 
 app.listen(8888)

@@ -10,6 +10,30 @@ body {
     left: calc(50% - 512px);
 }
 
+#reddit {
+    position:absolute;
+    top:0;
+    left:0;
+    background-image: url('/img/Triangle.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 190px;
+    width: 190px;
+}
+#reddit img {
+    padding-top: 5px;
+    height: 20px;
+}
+
+a, a:hover, a:active, a:visited
+{ color: white; }
+
+#redditText {
+    padding: 10px;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
 #codeMirrorDiv {
     display: none;
     width: 1024px;
@@ -27,7 +51,7 @@ body {
     position: absolute;
     top: calc(50% - 384px);
     left: calc(50% - 512px);
-    background: #282828;
+    background: #062A5A;
     border-radius: 20px;
 }
 
