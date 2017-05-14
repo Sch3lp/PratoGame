@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="theme/night.css">
     <link rel="stylesheet" href="lib/codemirror.css">
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css"
+    />
     <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
@@ -56,17 +57,40 @@
     <div id="postFormDiv">
         <form id="postForm">
             <h1>Thank you for playing!</h1>
-            <h2>Tell us a little about you...</h2>
-            First name:<br>
-            <input type="text" name="firstName" value="Mickey"><br><br> Last name:<br>
-            <input type="text" name="lastName" value="Mouse"><br><br> Email-address*: <br>
-            <input type="text" name="emailAddress" value="disney@disney.haha" required><br><br> Comments: <br>
-            <textarea name="freeComment" cols="40" rows="5"></textarea><br><br>
-            <input type="submit" value="Submit">
+            <h2>Please fill in the following form before continuing...</h2>
+            <input id='infoAboutPrato' type="checkbox" name="infoAboutPrato">I am interested in things related to Prato Services<br>
+            <input id='infoAboutDevStuff' type="checkbox" name="infoAboutDevStuff">I am interested in development related things<br>
+            <input id='infoAboutVacancies' type="checkbox" name="infoAboutVacancies">I am interested in vacancies at Prato Services<br>
+            <input id='wantGiveFeedback' type="checkbox" name="wantGiveFeedback">I would like to give feedback about the game<br>
+            <textarea id='freeCommentTextArea' name="freeComment" cols="50" rows="5"></textarea><br><br>
+
+            <div id='emailAddress' style='display: none;'>
+                Emailaddress:&nbsp;&nbsp;&nbsp;
+                <input type="text" name="emailAddress">
+            </div>
+            <input id='continueButton' type="submit" value="Continue">
+            <div id='socialIconsDiv'>
+                <a href='https://www.linkedin.com/company-beta/206353/' target="_blank">
+                    <img class='socialIcons' src='img/LinkedIn.png'>
+                </a>
+                <a href='https://www.facebook.com/PratoHR/?ref=bookmarks' target="_blank">
+                    <img class='socialIcons' src='img/Facebook.png'>
+                </a>
+                <a href='https://twitter.com/PratoHR' target="_blank">
+                    <img class='socialIcons' src='img/Twitter.png'>
+                </a>
+                <a href='https://plus.google.com/+PratoServicesHasselt' target="_blank">
+                    <img class='socialIcons' src='img/GooglePlus.png'>
+                </a>
+            </div>
+            <div id='websiteDiv'>
+                <a href='http://www.prato-services.eu/' target="_blank">www.prato-services.eu</a>
+            </div>
         </form>
     </div>
     <div id="reddit">
-        <div id="redditText">Visit our <a target="_blank" href="https://www.reddit.com/r/PratoGame/">subreddit</a> to<br/>discover solutions,<br/>discussions or<br/>a funny<br/>hack<br/>
+        <div id="redditText">Visit our <a target="_blank" href="https://www.reddit.com/r/PratoGame/">subreddit</a> to<br/>discover solutions,<br/>discussions
+            or<br/>a funny<br/>hack<br/>
             <img src='/img/Reddit.png'>
         </div>
     </div>
@@ -75,7 +99,8 @@
             window.cookieconsent.initialise({
                 "palette": {
                     "popup": {
-                        "background": "#252e39"
+                        "background": "#252e39",
+                        "font-family": "corpid"
                     },
                     "button": {
                         "background": "#14a7d0"

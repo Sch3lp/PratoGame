@@ -98,9 +98,11 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
             && !editorValue.includes("rightArm")
             && !editorValue.includes("antenna")) {
 
-            this.add.tween(leftArm.text).to({ alpha: 1 }, 250, Phaser.Easing.Linear.In, true)
-            this.add.tween(rightArm.text).to({ alpha: 1 }, 250, Phaser.Easing.Linear.In, true)
-            this.add.tween(antenna.text).to({ alpha: 1 }, 250, Phaser.Easing.Linear.In, true)
+            const childMap = robby.sprite.children.map(ch => ch.key)
+
+            if(!childMap.includes('l')) this.add.tween(leftArm.text).to({ alpha: 1 }, 250, Phaser.Easing.Linear.In, true)
+            if(!childMap.includes('r')) this.add.tween(rightArm.text).to({ alpha: 1 }, 250, Phaser.Easing.Linear.In, true)
+            if(!childMap.includes('a')) this.add.tween(antenna.text).to({ alpha: 1 }, 250, Phaser.Easing.Linear.In, true)            
         } else {
             this.add.tween(leftArm.text).to({ alpha: 0 }, 250, Phaser.Easing.Linear.In, true)
             this.add.tween(rightArm.text).to({ alpha: 0 }, 250, Phaser.Easing.Linear.In, true)

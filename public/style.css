@@ -11,6 +11,8 @@ body {
 }
 
 #reddit {
+    font-family: corpid;
+    font-size: 14px;
     position:absolute;
     top:0;
     left:0;
@@ -25,7 +27,10 @@ body {
     height: 20px;
 }
 
-a, a:hover, a:active, a:visited
+#redditText a,
+#redditText a:hover,
+#redditText a:active,
+#redditText a:visited
 { color: white; }
 
 #redditText {
@@ -45,6 +50,7 @@ a, a:hover, a:active, a:visited
 }
 
 #postFormDiv {
+    font-family: corpid;
     display: none;
     width: 1024px;
     height: 768px;
@@ -52,7 +58,35 @@ a, a:hover, a:active, a:visited
     top: calc(50% - 384px);
     left: calc(50% - 512px);
     background: #062A5A;
+    
     border-radius: 20px;
+}
+
+.socialIcons{
+    width: 35px;
+    height: 35px;
+    vertical-align:bottom;
+}
+
+#socialIconsDiv{
+    position: absolute;
+    bottom: 100px;
+    right: 100px;
+}
+
+#websiteDiv{
+    position: absolute;
+    bottom: 108px;
+    left: calc(50% - 100px);
+    width: 200px;
+}
+
+#continueButton{
+    position: absolute;
+    bottom: 100px;
+    left: 100px;
+    height: 35px;
+    border-radius: 4px;
 }
 
 #titleImage {
@@ -63,10 +97,32 @@ a, a:hover, a:active, a:visited
     left: calc(50% - 512px);
 }
 
+#titleImage:hover {
+    cursor:pointer;
+}
+
 form {
-    margin-top: 25px;
-    margin-left: 25px;
+    margin: 100px;
     color: white;
+}
+
+form h1{
+    color: #1899d6;
+}
+#websiteDiv a,
+#websiteDiv a:hover,
+#websiteDiv a:active,
+#websiteDiv a:visited
+{
+    color: #1899d6;
+}
+
+input[type=submit]{
+    font-family: 'corpid';
+}
+
+input[type=checkbox]{
+    margin-right: 10px;
 }
 
 .cm-s-night.CodeMirror {
@@ -89,4 +145,26 @@ form {
 
 .CodeMirror-simplescroll-horizontal div, .CodeMirror-simplescroll-vertical div {
     background: #282828;
+}
+
+.cc-floating.cc-theme-edgeless .cc-message {
+    font-family: corpid;
+    font-size: 14px;
+}
+
+.cc-window.cc-floating .cc-compliance {
+    font-family: corpid;
+}
+
+#freeCommentTextArea {
+    display: none;
+    margin-left:28px;
+    margin-top:5px;
+    max-width: 768px;
+    max-height: 250px
+}
+
+@font-face {
+    font-family: corpid;
+    src: url('/font/Corpid Bold.otf');
 }
