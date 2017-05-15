@@ -85,6 +85,7 @@ class Robby {
         part.sprite.y -= robby.sprite.y
         this.sprite.addChild(part.sprite)
         this.game.add.tween(part.sprite).to({ x: this[part.element + 'Position'].x, y: this[part.element + 'Position'].y }, 250, Phaser.Easing.Linear.In, true)
+        this.game.add.tween(part.sprite).to({ angle: Math.random() >= 0.5 ? 720 : -720}, 250, Phaser.Easing.Linear.In, true)
         return 'Attachment successful'
     }
     checkIfYoureThere() {

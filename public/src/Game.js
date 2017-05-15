@@ -24,6 +24,7 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         this.exitGroup = this.add.group();
 
         gridGenerator.setupGrid(this)
+        this.postNewSession()
         this.setupCharacters()
         this.setupParts()
         this.setupArrows()
@@ -53,6 +54,10 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         })
 
         this.shiftKey = this.input.keyboard.addKey(Phaser.Keyboard.SHIFT)
+        this.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onDown.add(this.pressRightArrow, this);
+        this.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(this.pressDownArrow, this);
+        this.input.keyboard.addKey(Phaser.Keyboard.LEFT).onDown.add(this.pressLeftArrow, this);
+        this.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(this.pressUpArrow, this);
 
         this.history.setValue(this.startText)
     }
@@ -181,24 +186,24 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         left.scale.setTo(0.25, 0.25)
     }
     pressRightArrow() {
+        if(this.editor.hasFocus()) return;
         this.editor.setValue('robby.goRight()')
         this.enterKeyDown()
-        this.editor.focus()
     }
     pressUpArrow() {
+        if(this.editor.hasFocus()) return;
         this.editor.setValue('robby.goUp()')
         this.enterKeyDown()
-        this.editor.focus()
     }
     pressDownArrow() {
+        if(this.editor.hasFocus()) return;
         this.editor.setValue('robby.goDown()')
         this.enterKeyDown()
-        this.editor.focus()
     }
     pressLeftArrow() {
+        if(this.editor.hasFocus()) return;
         this.editor.setValue('robby.goLeft()')
         this.enterKeyDown()
-        this.editor.focus()
     }
     addTweenedSprite(spriteName, positionX, positionY, delay, endScale) {
         const sprite = this.getGroupBySpriteName(spriteName).create(positionX, positionY, spriteName)
@@ -242,6 +247,14 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
             case 'robbyeyeright':
                 return this.robbyGroup
         }
+    }
+    postNewSession() {
+        $.ajax({
+            url: window.location.href + 'newSession',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ 'level': gridGenerator.levelString })
+        })
     }
     postInput(input) {
         $.ajax({

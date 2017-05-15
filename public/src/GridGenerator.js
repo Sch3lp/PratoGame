@@ -3,12 +3,13 @@ class GridGenerator {
         this.levelGrid
         this.gridRadius
         this.game
+        this.levelString
     }
     createGrid() {
-        const level = !this.game.isNotFirstRun ? this.getLevelString() : new RandomGridGenerator().generate()
-        const oneLineLevel = level.replace(/(\r\n|\n|\r)/gm, '')
-        const columns = Math.max(...level.split('\n').map((line) => line.length))
-        const rows = level.split('\n').length
+        this.levelString = !this.game.isNotFirstRun ? this.getLevelString() : new RandomGridGenerator().generate()
+        const oneLineLevel = this.levelString.replace(/(\r\n|\n|\r)/gm, '')
+        const columns = Math.max(...this.levelString.split('\n').map((line) => line.length))
+        const rows = this.levelString.split('\n').length
 
         const grid = []
 

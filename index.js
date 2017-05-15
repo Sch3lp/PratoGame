@@ -16,8 +16,11 @@ var db = new sqlite3.Database('pratogame.db');
 app.use(express.static('public'))
 
 app.get('/', function (req, res) {
-    var me = this;
     res.sendFile(path.join(__dirname + '/index.html'));
+});
+
+app.post('/newSession', function (req, res) {
+    var me = this;
     const cookie = getCookieNumber(req, res)
     var playerId;
     db.all('SELECT [id] FROM Player WHERE Cookie = ?', cookie, function (err, rows) {
@@ -25,12 +28,13 @@ app.get('/', function (req, res) {
         if (!playerId) {
             db.run('INSERT INTO Player (Cookie) VALUES (?)', cookie, function (err, row) {
                 playerId = this.lastID
-                db.run('INSERT INTO Session (StartDate, PlayerId) VALUES (?, ?)', [me.getLocalNow(), playerId])
+                db.run('INSERT INTO Session (StartDate, PlayerId, Level) VALUES (?, ?, ?)', [me.getLocalNow(), playerId, req.body.level])
             })
         } else {
-            db.run('INSERT INTO Session (StartDate, PlayerId) VALUES (?, ?)', [me.getLocalNow(), playerId])
+            db.run('INSERT INTO Session (StartDate, PlayerId, Level) VALUES (?, ?, ?)', [me.getLocalNow(), playerId, req.body.level])
         }
     })
+    res.end()
 });
 
 app.post('/input', function (req, res) {
@@ -41,12 +45,14 @@ app.post('/input', function (req, res) {
 })
 
 app.post('/playerinfo', function (req, res) {
+    const ToBool = (property) => property === "on" ? '1' : '0'
     db.run('UPDATE Session \
     SET FreeComment = ? \
     WHERE PlayerId = (SELECT Id FROM Player WHERE Cookie = ?) AND Session.id = (SELECT MAX(Id) FROM Session)', [req.body.freeComment, req.cookies.pratoGameCookie])
     db.run('UPDATE Player \
-    SET Email = ?, FirstName = ?, LastName = ? \
-    WHERE Cookie = ?', [req.body.emailAddress, req.body.firstName, req.body.lastName, req.cookies.pratoGameCookie])
+    SET Email = ?, infoAboutPrato = ?, infoAboutDevStuff = ?, infoAboutVacancies = ? \
+    WHERE Cookie = ?', [req.body.emailAddress, ToBool(req.body.infoAboutPrato), ToBool(req.body.infoAboutDevStuff),
+                        ToBool(req.body.infoAboutVacancies), req.cookies.pratoGameCookie])
     res.end()
 })
 

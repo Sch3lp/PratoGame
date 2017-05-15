@@ -10,11 +10,13 @@ class Post {
         $('#infoAboutPrato').click(this.showForCheckboxes)
         $('#infoAboutDevStuff').click(this.showForCheckboxes)
         $('#infoAboutVacancies').click(this.showForCheckboxes)
-        $('#wantGiveFeedback').click(function(){
+        $('#wantGiveFeedback').click(function () {
             if (this.checked) {
                 $('#freeCommentTextArea').show()
+                $('#freeCommentTextArea').prop('required', true);
             } else {
                 $('#freeCommentTextArea').hide()
+                $('#freeCommentTextArea').prop('required', false);
             }
         })
 
@@ -29,8 +31,10 @@ class Post {
             || $('#infoAboutDevStuff')[0].checked
             || $('#infoAboutVacancies')[0].checked) {
             $('#emailAddress').show()
+            $('#emailAddressInput').prop('required', true);
         } else {
             $('#emailAddress').hide()
+            $('#emailAddressInput').prop('required', false);
         }
     }
 }

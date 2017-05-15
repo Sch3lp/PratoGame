@@ -10,8 +10,6 @@ class Preloader {
         this.load.image('downArrow', 'img/Down.png')
         this.load.image('leftArrow', 'img/Left.png')
         this.load.image('arrowBG', 'img/ArrowBG.png')
-        this.load.image('dust', 'img/Dust.png')
-        this.load.image('dustRed', 'img/DustRed.png')
         this.load.image('bg', 'img/BG.png')
         this.load.image('bgPre', 'img/BGPre.png')
         this.load.image('l', 'img/RobbyLeft.png')
