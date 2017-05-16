@@ -31,7 +31,7 @@ class Robby {
         this.emitter1.maxParticleSpeed = new Phaser.Point(50, 50)
         this.emitter1.minParticleSpeed = new Phaser.Point(-50, -50)
         game.time.events.add(1000, () => { this.emitter1.start(false, 1000, 25) }, this)
-        
+
         this.game.robbyGroup = this.game.add.group();
         this.sprite = game.addTweenedSprite('robby', position.x, position.y, 1000, 0.3)
         this.leftEye = game.addTweenedSprite('robbyeyeleft', -57, -95, 1000, 1)
@@ -55,6 +55,8 @@ class Robby {
         this.game.add.tween(this.emitter1).to({ x: destination.x, y: destination.y }, 250, Phaser.Easing.Linear.In, true)
         this.game.add.tween(this.sprite.scale).to({ x: this.sprite.scale.x * 0.8, y: this.sprite.scale.y * 0.8 }, 125, Phaser.Easing.Linear.InOut, true).yoyo(true)
         enemy.notify()
+
+        this.game.add.audio('whoosh').play()
         moveTween.onComplete.add(this.checkIfYoureThere, this)
     }
     goRight() {
@@ -67,8 +69,8 @@ class Robby {
     canYouGoThere(diffX, diffY) {
         const position = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y)
         return gridGenerator.levelGrid[position.x + diffX]
-          && gridGenerator.levelGrid[position.x + diffX][position.y + diffY]
-          && ['-', '|'].includes(gridGenerator.levelGrid[position.x + diffX][position.y + diffY])
+            && gridGenerator.levelGrid[position.x + diffX][position.y + diffY]
+            && ['-', '|'].includes(gridGenerator.levelGrid[position.x + diffX][position.y + diffY])
     }
     doABarrelRoll() {
         const barrelRoll = this.game.add.tween(this.sprite).to({ angle: 359 }, 250, Phaser.Easing.Linear.None, true)
@@ -85,15 +87,20 @@ class Robby {
         part.sprite.y -= robby.sprite.y
         this.sprite.addChild(part.sprite)
         this.game.add.tween(part.sprite).to({ x: this[part.element + 'Position'].x, y: this[part.element + 'Position'].y }, 250, Phaser.Easing.Linear.In, true)
-        this.game.add.tween(part.sprite).to({ angle: Math.random() >= 0.5 ? 720 : -720}, 250, Phaser.Easing.Linear.In, true)
+        this.game.add.tween(part.sprite).to({ angle: Math.random() >= 0.5 ? 720 : -720 }, 250, Phaser.Easing.Linear.In, true)
+        this.game.add.audio('attach').play()
         return 'Attachment successful'
     }
     checkIfYoureThere() {
         const exitPosition = gridGenerator.getPositionOfElementInGrid('e')
         const myPosition = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y)
         if (exitPosition.x !== myPosition.x || exitPosition.y !== myPosition.y) return;
-        if (this.checkIfComplete()) this.game.goToPostState()
-        this.game.setHistory('ERROR! Robby cannot leave the facility without attaching all remaining parts!')
+        if (this.checkIfComplete()) {
+            this.game.goToPostState()
+        } else {
+            this.game.add.audio('error').play()
+            this.game.setHistory('ERROR! Robby cannot leave the facility without attaching all remaining parts!')
+        }
     }
     checkIfComplete() {
         const childrenSpriteKeys = this.sprite.children.map(ch => ch.key)

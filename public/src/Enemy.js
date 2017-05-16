@@ -107,6 +107,7 @@ class Enemy {
             robby.emitter0.y = spawnPosition.y
             robby.emitter1.x = spawnPosition.x
             robby.emitter1.y = spawnPosition.y
+            this.game.add.audio('explosion').play()
         }
     }
 
