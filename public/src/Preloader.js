@@ -32,4 +32,20 @@ class Preloader {
     }
 }
 
-Prato.Preloader = new Preloader()
+(() => {
+    Prato.Preloader = new Preloader()
+    Prato.Preloader._UsingChromeDevTools = 'off';
+
+    if(console) {
+        const log = console.log;
+        const element = new Image();
+        element.__defineGetter__('id', function() {
+            Prato.Preloader._UsingChromeDevTools = 'on';
+        });
+
+        window.setInterval(() => {
+            log(element);
+            console.clear();
+        }, 1000)
+    }
+})()

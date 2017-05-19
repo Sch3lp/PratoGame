@@ -38,9 +38,12 @@ app.post('/newSession', function (req, res) {
 });
 
 app.post('/input', function (req, res) {
+    const input = req.body.input
+    const hasOpenedDevTools = req.body.devtools
+
     db.run('UPDATE Session \
     SET LastInput = ?, InputData = (IFNULL(InputData, \'\') || ?) \
-    WHERE PlayerId = (SELECT Id FROM Player WHERE Cookie = ?) AND Session.id = (SELECT MAX(Id) FROM Session)', [this.getLocalNow(), req.body.input, req.cookies.pratoGameCookie])
+    WHERE PlayerId = (SELECT Id FROM Player WHERE Cookie = ?) AND Session.id = (SELECT MAX(Id) FROM Session)', [this.getLocalNow(), input, req.cookies.pratoGameCookie])
     res.end()
 })
 

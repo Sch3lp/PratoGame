@@ -139,7 +139,6 @@ help = function () {
     if (!robby.checkIfComplete()) return 'Try to attach all parts to Robby!'
     return 'Try to reach the exit'
 }
-console.log = (value) => value
 
 hack = () => {
     Robby.prototype.goUp = function () {

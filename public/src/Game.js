@@ -261,7 +261,7 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
             url: window.location.href + 'input',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ 'input': input + '\n' })
+            data: JSON.stringify({ 'input': input + '\n', 'devtools': Prato.Preloader._UsingChromeDevTools })
         })
     }
 }
