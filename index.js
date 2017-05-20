@@ -22,11 +22,12 @@ app.get('/', function (req, res) {
 app.post('/newSession', function (req, res) {
     var me = this;
     const cookie = getCookieNumber(req, res)
+    const recruitmentId = req.body.recId ? req.body.recId : null
     var playerId;
     db.all('SELECT [id] FROM Player WHERE Cookie = ?', cookie, function (err, rows) {
         if(rows[0]) playerId = rows[0].Id
         if (!playerId) {
-            db.run('INSERT INTO Player (Cookie) VALUES (?)', cookie, function (err, row) {
+            db.run('INSERT INTO Player (Cookie, RecruitmentIdentifier) VALUES (?, ?)', [cookie, recruitmentId], function (err, row) {
                 playerId = this.lastID
                 db.run('INSERT INTO Session (StartDate, PlayerId, Level) VALUES (?, ?, ?)', [me.getLocalNow(), playerId, req.body.level])
             })
@@ -39,7 +40,6 @@ app.post('/newSession', function (req, res) {
 
 app.post('/input', function (req, res) {
     const input = req.body.input
-    const hasOpenedDevTools = req.body.devtools
 
     db.run('UPDATE Session \
     SET LastInput = ?, InputData = (IFNULL(InputData, \'\') || ?) \

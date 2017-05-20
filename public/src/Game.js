@@ -54,10 +54,10 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         })
 
         this.shiftKey = this.input.keyboard.addKey(Phaser.Keyboard.SHIFT)
-        this.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onDown.add(this.pressRightArrow, this);
-        this.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(this.pressDownArrow, this);
-        this.input.keyboard.addKey(Phaser.Keyboard.LEFT).onDown.add(this.pressLeftArrow, this);
-        this.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(this.pressUpArrow, this);
+        this.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onDown.add(this.pressRightArrow, this)
+        this.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(this.pressDownArrow, this)
+        this.input.keyboard.addKey(Phaser.Keyboard.LEFT).onDown.add(this.pressLeftArrow, this)
+        this.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(this.pressUpArrow, this)
 
         this.history.setValue(this.startText)
     }
@@ -105,9 +105,9 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
 
             const childMap = robby.sprite.children.map(ch => ch.key)
 
-            if(!childMap.includes('l')) this.add.tween(leftArm.text).to({ alpha: 1 }, 250, Phaser.Easing.Linear.In, true)
-            if(!childMap.includes('r')) this.add.tween(rightArm.text).to({ alpha: 1 }, 250, Phaser.Easing.Linear.In, true)
-            if(!childMap.includes('a')) this.add.tween(antenna.text).to({ alpha: 1 }, 250, Phaser.Easing.Linear.In, true)            
+            if (!childMap.includes('l')) this.add.tween(leftArm.text).to({ alpha: 1 }, 250, Phaser.Easing.Linear.In, true)
+            if (!childMap.includes('r')) this.add.tween(rightArm.text).to({ alpha: 1 }, 250, Phaser.Easing.Linear.In, true)
+            if (!childMap.includes('a')) this.add.tween(antenna.text).to({ alpha: 1 }, 250, Phaser.Easing.Linear.In, true)
         } else {
             this.add.tween(leftArm.text).to({ alpha: 0 }, 250, Phaser.Easing.Linear.In, true)
             this.add.tween(rightArm.text).to({ alpha: 0 }, 250, Phaser.Easing.Linear.In, true)
@@ -186,22 +186,22 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         left.scale.setTo(0.25, 0.25)
     }
     pressRightArrow() {
-        if(this.editor.hasFocus()) return;
+        if (this.editor.hasFocus()) return;
         this.editor.setValue('robby.goRight()')
         this.enterKeyDown()
     }
     pressUpArrow() {
-        if(this.editor.hasFocus()) return;
+        if (this.editor.hasFocus()) return;
         this.editor.setValue('robby.goUp()')
         this.enterKeyDown()
     }
     pressDownArrow() {
-        if(this.editor.hasFocus()) return;
+        if (this.editor.hasFocus()) return;
         this.editor.setValue('robby.goDown()')
         this.enterKeyDown()
     }
     pressLeftArrow() {
-        if(this.editor.hasFocus()) return;
+        if (this.editor.hasFocus()) return;
         this.editor.setValue('robby.goLeft()')
         this.enterKeyDown()
     }
@@ -249,11 +249,12 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         }
     }
     postNewSession() {
+        const recId = this.getUrlParameter('recId')
         $.ajax({
-            url: window.location.href + 'newSession',
+            url: window.location.origin + '/newSession',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ 'level': gridGenerator.levelString })
+            data: JSON.stringify({ 'level': gridGenerator.levelString, 'recId' : recId })
         })
     }
     postInput(input) {
@@ -261,9 +262,23 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
             url: window.location.href + 'input',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ 'input': input + '\n', 'devtools': Prato.Preloader._UsingChromeDevTools })
+            data: JSON.stringify({ 'input': input + '\n' })
         })
     }
+    getUrlParameter(sParam) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+        }
+    };
 }
 
 Prato.Game = new Game()

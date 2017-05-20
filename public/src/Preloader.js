@@ -28,24 +28,19 @@ class Preloader {
         this.load.image('1', 'img/1.png')
     }
     create() {
+        $(document).ready(function () {
+            $(document).keydown(function (e) {
+                if (e.which == 123) {
+                    $.ajax({
+                        url: window.location.href + 'input',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ 'input': 'The player just pressed F12!\n' })
+                    })
+                }
+            });
+        });
         this.state.start('Pre')
     }
 }
-
-(() => {
-    Prato.Preloader = new Preloader()
-    Prato.Preloader._UsingChromeDevTools = 'off';
-
-    if(console) {
-        const log = console.log;
-        const element = new Image();
-        element.__defineGetter__('id', function() {
-            Prato.Preloader._UsingChromeDevTools = 'on';
-        });
-
-        window.setInterval(() => {
-            log(element);
-            console.clear();
-        }, 1000)
-    }
-})()
+Prato.Preloader = new Preloader()
