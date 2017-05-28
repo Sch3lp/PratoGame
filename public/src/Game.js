@@ -184,6 +184,24 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
         right.scale.setTo(0.25, 0.25)
         down.scale.setTo(0.25, 0.25)
         left.scale.setTo(0.25, 0.25)
+
+        this.addFloatFunctionToButton(up)
+        this.addFloatFunctionToButton(right)
+        this.addFloatFunctionToButton(down)
+        this.addFloatFunctionToButton(left)
+        
+        this.time.events.add(2000, function(){this.blinkRightButton(right, true)}, this)
+    }
+    addFloatFunctionToButton(button){
+        button.onInputOver.add(function(){this.scale.setTo(0.3, 0.3)}, button)
+        button.onInputOut.add(function(){this.scale.setTo(0.25, 0.25)}, button)
+    }
+    blinkRightButton(rightButton, makeBigger, iteration = 0){
+        if(iteration > 5) return;
+        const scale = makeBigger ? 0.3 : 0.25
+        rightButton.scale.setTo(scale, scale)
+        iteration++
+        this.time.events.add(500, function(){this.blinkRightButton(rightButton, !makeBigger, iteration)}, this)
     }
     pressRightArrow() {
         if (this.editor.hasFocus()) return;
