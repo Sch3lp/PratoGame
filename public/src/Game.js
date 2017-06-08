@@ -277,7 +277,7 @@ INVOKE THE HELP FUNCTION IF YOU NEED A HAND\n\
     }
     postInput(input) {
         $.ajax({
-            url: window.location.href + 'input',
+            url: window.location.origin + '/input',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ 'input': input + '\n' })

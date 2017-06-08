@@ -1,14 +1,13 @@
 class Post {
     create() {
         $("#postForm").submit((e) => {
-            $.post(window.location.href + 'playerinfo', $('#postForm').serialize())
+            $.post(window.location.origin + '/playerinfo', $('#postForm').serialize())
             document.getElementById('postFormDiv').style.display = 'none'
             this.state.start('Game', true, false, true)
             e.preventDefault()
         })
 
         $('#infoAboutPrato').click(this.showForCheckboxes)
-        $('#infoAboutDevStuff').click(this.showForCheckboxes)
         $('#infoAboutVacancies').click(this.showForCheckboxes)
         $('#wantGiveFeedback').click(function () {
             if (this.checked) {
@@ -27,9 +26,7 @@ class Post {
     }
 
     showForCheckboxes() {
-        if ($('#infoAboutPrato')[0].checked
-            || $('#infoAboutDevStuff')[0].checked
-            || $('#infoAboutVacancies')[0].checked) {
+        if ($('#infoAboutPrato')[0].checked || $('#infoAboutVacancies')[0].checked) {
             $('#emailAddress').show()
             $('#emailAddressInput').prop('required', true);
         } else {

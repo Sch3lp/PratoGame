@@ -76,9 +76,10 @@ body {
 
 #websiteDiv{
     position: absolute;
-    bottom: 108px;
-    left: calc(50% - 100px);
-    width: 200px;
+    left: calc(50% - 175px);
+    width: 350px;
+    bottom: 100px;
+    text-align: center;
 }
 
 #continueButton{

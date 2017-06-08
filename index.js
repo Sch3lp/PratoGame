@@ -53,9 +53,8 @@ app.post('/playerinfo', function (req, res) {
     SET FreeComment = ? \
     WHERE PlayerId = (SELECT Id FROM Player WHERE Cookie = ?) AND Session.id = (SELECT MAX(Id) FROM Session)', [req.body.freeComment, req.cookies.pratoGameCookie])
     db.run('UPDATE Player \
-    SET Email = ?, infoAboutPrato = ?, infoAboutDevStuff = ?, infoAboutVacancies = ? \
-    WHERE Cookie = ?', [req.body.emailAddress, ToBool(req.body.infoAboutPrato), ToBool(req.body.infoAboutDevStuff),
-                        ToBool(req.body.infoAboutVacancies), req.cookies.pratoGameCookie])
+    SET Email = ?, infoAboutPrato = ?, infoAboutVacancies = ? \
+    WHERE Cookie = ?', [req.body.emailAddress, ToBool(req.body.infoAboutPrato), ToBool(req.body.infoAboutVacancies), req.cookies.pratoGameCookie])
     res.end()
 })
 

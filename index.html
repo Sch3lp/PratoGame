@@ -33,7 +33,7 @@
     <div id="phaserContainer">
         <script type="text/javascript">
             (function () {
-                const game = new Phaser.Game(1024, 768, Phaser.AUTO, 'phaserContainer', null, true);
+                var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'phaserContainer', null, true);
 
                 game.state.add('Boot', Prato.Boot);
                 game.state.add('Preloader', Prato.Preloader);
@@ -57,16 +57,16 @@
     <div id="postFormDiv">
         <form id="postForm">
             <h1>Thank you for playing!</h1>
-            <h2>Please fill in the following form before continuing...</h2>
-            <input id='infoAboutPrato' type="checkbox" name="infoAboutPrato">I am interested in things related to Prato Services<br>
-            <input id='infoAboutDevStuff' type="checkbox" name="infoAboutDevStuff">I am interested in development related things<br>
-            <input id='infoAboutVacancies' type="checkbox" name="infoAboutVacancies">I am interested in vacancies at Prato Services<br>
+            <h2>Please fill in the following form to continue to the next level.</h2>
+            <input id='infoAboutPrato' type="checkbox" name="infoAboutPrato">I would like to receive invitations for technical events organised by Prato like a SoCraTes Open Space, a Growth Talk, etc.<br>
+            <input id='infoAboutVacancies' type="checkbox" name="infoAboutVacancies">I would like to be kept informed about technical vacancies at Prato<br>
             <input id='wantGiveFeedback' type="checkbox" name="wantGiveFeedback">I would like to give feedback about the game<br>
             <textarea id='freeCommentTextArea' name="freeComment" cols="50" rows="5"></textarea><br><br>
 
             <div id='emailAddress' style='display: none;'>
                 Emailaddress:&nbsp;&nbsp;&nbsp;
                 <input id='emailAddressInput' type="email" name="emailAddress">
+                <div style='font-size:12px;'><br/>In this way, Prato can inform you about this. Your personal data will only be used by Prato. You have the right to request, modify and rectify it or unsubscribe at any time. You may also oppose any processing of your personal data.</div>
             </div>
             <input id='continueButton' type="submit" value="Continue">
             <div id='socialIconsDiv'>
@@ -79,12 +79,12 @@
                 <a href='https://twitter.com/PratoHR' target="_blank">
                     <img class='socialIcons' src='img/Twitter.png'>
                 </a>
-                <a href='https://plus.google.com/+PratoServicesHasselt' target="_blank">
-                    <img class='socialIcons' src='img/GooglePlus.png'>
+                <a href='https://www.youtube.com/user/pratocloud' target="_blank">
+                    <img class='socialIcons' src='img/Youtube.png'>
                 </a>
             </div>
             <div id='websiteDiv'>
-                <a href='http://www.prato-services.eu/' target="_blank">www.prato-services.eu</a>
+                Copyright Prato NV 2017 | <a href='http://www.prato.be/' target="_blank">www.prato.be</a><br/>Privacy Policy | Cookie policy
             </div>
         </form>
     </div>

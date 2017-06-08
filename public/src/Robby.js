@@ -134,13 +134,13 @@ class Navigation {
 
 const robby = new Robby()
 
-help = function () {
+const help = () => {
     if (!robby.goDown) return 'Try implementing all the go functions on Robby!'
     if (!robby.checkIfComplete()) return 'Try to attach all parts to Robby!'
     return 'Try to reach the exit'
 }
 
-hack = () => {
+const hack = () => {
     Robby.prototype.goUp = function () {
         this.windingKey.wind()
         this.navigation.setNavigation(0, -1)
