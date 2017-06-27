@@ -67,7 +67,10 @@ class Robby {
         return 'GOING!'
     }
     goDown() {
-        
+        this.windingKey.wind();
+        this.navigation.setNavigation(this.navigation.x, this.navigation.y+1);
+        this.go();
+        return 'GOING!';
     }
     canYouGoThere(diffX, diffY) {
         const position = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y)
