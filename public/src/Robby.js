@@ -68,8 +68,9 @@ class Robby {
     }
     goDown() {
         this.windingKey.wind();
-        this.navigation.setNavigation(this.navigation.x, this.navigation.y+1);
-        this.go();
+        this.navigation.setNavigation(0, 1);
+        const problem = this.go();
+        if (problem) return problem;
         return 'GOING!';
     }
     canYouGoThere(diffX, diffY) {
