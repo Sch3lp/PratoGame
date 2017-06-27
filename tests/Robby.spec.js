@@ -1,4 +1,4 @@
-require('../public/src/Robby');
+let {Robby} = require('../public/src/Robby.js');
 
 describe('robby', () => {
     let robby;
