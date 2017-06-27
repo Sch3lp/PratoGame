@@ -1,7 +1,14 @@
-let Robby = require('../public/src/Robby');
+require('../public/src/Robby');
 
 describe('robby', () => {
-    it('should do a barrell Roll', () => {
-        expect(true).toBe(false);
+    let robby;
+    beforeEach(() => {
+        robby = new Robby();
+    });
+
+    describe('goDown', () => {
+        it('should move robby down', () => {
+            robby.goDown();
+        });
     });
 });

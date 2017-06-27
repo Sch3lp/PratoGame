@@ -66,6 +66,9 @@ class Robby {
         if (problem) return problem
         return 'GOING!'
     }
+    goDown() {
+        
+    }
     canYouGoThere(diffX, diffY) {
         const position = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y)
         return gridGenerator.levelGrid[position.x + diffX]
