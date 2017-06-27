@@ -71,7 +71,7 @@ class Robby {
         this.navigation.setNavigation(0, 1);
         const problem = this.go();
         if (problem) return problem;
-        return 'GOING!';
+        return 'GOING DOWN!';
     }
     canYouGoThere(diffX, diffY) {
         const position = gridGenerator.convertPixelsToGrid(this.sprite.x, this.sprite.y)

@@ -20,7 +20,7 @@ describe('robby', () => {
             expect(robby.windingKey.windCalled).toBeTruthy();
         });
         it('returns GOING!', () => {
-            expect(result).toBe('GOING!');
+            expect(result).toBe('GOING DOWN!');
         });
         it('physically goes', () => {
             expect(robby.go).toHaveBeenCalled();            
